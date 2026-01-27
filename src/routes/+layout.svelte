@@ -3,6 +3,13 @@
     let date = new Date().getFullYear();
 </script>
 
+<svelte:head>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+</svelte:head>
+
 <nav
     class="navbar navbar-expand-lg navbar-dark mb-4"
     style="background-color: #002944;"
@@ -70,6 +77,9 @@
     :global(h5),
     :global(h6) {
         color: #4a9eff;
+    }
+    .sectionHeading {
+        padding-bottom: 5%;
     }
 
     :global(a) {
