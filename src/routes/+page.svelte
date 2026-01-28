@@ -117,8 +117,8 @@
                             <a
                                 href="https://drive.google.com/file/d/14QlLGwWFjMibgWFr4m3WRWh4du41W_Z_/view?usp=sharing"
                             >
-                                resume
-                            </a>.
+                                resume.
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -202,18 +202,7 @@
                                     delay: 80,
                                 }}
                             >
-                                <div
-                                    class="project-header"
-                                    role="button"
-                                    tabindex="0"
-                                    on:click={() => toggleProject(1)}
-                                    on:keydown={(e) => {
-                                        if (e.key === "Enter") {
-                                            e.preventDefault();
-                                            toggleProject(1);
-                                        }
-                                    }}
-                                >
+                                <div class="project-header">
                                     <h3 class="mb-0">
                                         <a
                                             href="https://github.com/onetwothreefourfivesixe/PathwayPaver"
@@ -221,36 +210,30 @@
                                             Pathway Paver
                                         </a>
                                     </h3>
-                                    <i
+                                    <!-- <i
                                         class="fas fa-chevron-down"
                                         style="transform: rotate({projectExpanded[1]
                                             ? 180
                                             : 0}deg); transition: transform 0.3s;"
-                                    ></i>
+                                    ></i> -->
                                 </div>
-                                {#if projectExpanded[1]}
-                                    <p
-                                        class="mt-3"
-                                        transition:slide={{ duration: 300 }}
-                                    >
-                                        Pathway Paver is a grid-based puzzle
-                                        game where players guide cars to their
-                                        color-matched destinations by
-                                        strategically placing road tiles. Each
-                                        level introduces limited resources, turn
-                                        constraints, and obstacles such as
-                                        trees, requiring careful planning to
-                                        avoid collisions and dead ends. The game
-                                        was created for the 2025 McLean
-                                        Hackathon, where it won first place.
-                                    </p>
-                                {/if}
+                                <p class="mt-3">
+                                    Pathway Paver is a grid-based puzzle game
+                                    where players guide cars to their
+                                    color-matched destinations by strategically
+                                    placing road tiles. Each level introduces
+                                    limited resources, turn constraints, and
+                                    obstacles such as trees, requiring careful
+                                    planning to avoid collisions and dead ends.
+                                    The game was created for the 2025 McLean
+                                    Hackathon, where it won first place.
+                                </p>
                             </div>
                         {/if}
                     </div>
 
                     <!-- Card 3 -->
-                    <div
+                    <!-- <div
                         class="project-card-wrapper"
                         use:inview={{
                             onEnter: () => (projectVisible[2] = true),
@@ -292,7 +275,7 @@
                                 </p>
                             </div>
                         {/if}
-                    </div>
+                    </div> -->
                 </div>
             </section>
         {/if}
