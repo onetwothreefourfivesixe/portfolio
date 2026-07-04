@@ -115,7 +115,7 @@
                         <p>
                             Check out my
                             <a
-                                href="https://drive.google.com/file/d/14QlLGwWFjMibgWFr4m3WRWh4du41W_Z_/view?usp=sharing"
+                                href="https://docs.google.com/document/d/1yASoDh2WNXUfGnduMeqlCCW8SqkGNP-x/edit?usp=sharing&ouid=116429660102535537903&rtpof=true&sd=true"
                             >
                                 resume.
                             </a>
