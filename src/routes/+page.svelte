@@ -102,15 +102,12 @@
                     <div style="padding-left: 2%;">
                         <h1 class="mb-3 sectionHeading">About</h1>
                         <p>
-                            I am currently a senior at Mclean High School. My
-                            main interests are in robotics, AI, and history. I'm
-                            captain of one of my school's quizbowl teams.
-                            Outside of school, I also captain the <a
-                                href="https://pigeon-bots.netlify.app/"
-                                >PigeonBots</a
-                            >
-                            FTC robotics team. In my free time, I enjoy playing piano,
-                            building PCs, and spending time with friends and family.
+                            I am currently a freshman at UC Berkeley studying
+                            Data Science. My main interests are in robotics, AI,
+                            and history. I am currently working at CACI for an
+                            AI prompt engineering internship. In my free time, I
+                            enjoy playing piano, building PCs, and spending time
+                            with friends and family.
                         </p>
                         <p>
                             Check out my
