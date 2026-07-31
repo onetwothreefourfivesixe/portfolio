@@ -11,8 +11,8 @@
     let showProjects = false;
     let showContact = false;
 
-    let projectVisible = [false, false, false];
-    let projectExpanded = [false, false, false];
+    let projectVisible = [false, false, false, false];
+    let projectExpanded = [false, false, false, false];
 
     function toggleProject(index) {
         projectExpanded[index] = !projectExpanded[index];
@@ -233,10 +233,51 @@
                     </div>
 
                     <!-- Card 3 -->
-                    <!-- <div
+                    <div
                         class="project-card-wrapper"
                         use:inview={{
                             onEnter: () => (projectVisible[2] = true),
+                            once: true,
+                            threshold: 0.15,
+                        }}
+                    >
+                        {#if projectVisible[2]}
+                            <div
+                                class="project-card"
+                                in:fly={{
+                                    y: 22,
+                                    duration: 600,
+                                    opacity: 0,
+                                    delay: 160,
+                                }}
+                            >
+                                <h3 class="mb-3">
+                                    <a
+                                        href="https://github.com/onetwothreefourfivesixe/ScreenBreak"
+                                    >
+                                        ScreenBreak
+                                    </a>
+                                </h3>
+                                <p>
+                                    ScreenBreak is a JavaFX desktop app that
+                                    reminds you to rest your eyes at a fixed
+                                    interval. Users set their own break timer and
+                                    watch the countdown on a live progress bar,
+                                    with optional audio alerts, a custom alert
+                                    sound, and a volume slider. Settings persist
+                                    between sessions, and the app minimizes to
+                                    the system tray so it can run quietly in the
+                                    background on Windows, macOS, and Linux.
+                                </p>
+                            </div>
+                        {/if}
+                    </div>
+
+                    <!-- Card 4 -->
+                    <!-- <div
+                        class="project-card-wrapper"
+                        use:inview={{
+                            onEnter: () => (projectVisible[3] = true),
                             once: true,
                             threshold: 0.15,
                         }}

@@ -1,38 +1,48 @@
-# create-svelte
+# Edward Lin — Personal Website
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+My personal portfolio site: a single-page introduction covering who I am, the projects I've built, and how to reach me.
 
-## Creating a project
+Built with [SvelteKit](https://kit.svelte.dev/) and [Bootstrap 5](https://getbootstrap.com/), with scroll-triggered animations driven by `IntersectionObserver` and Svelte transitions.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Sections
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- **Home** — banner with a rotating list of the hats I wear
+- **About** — short bio, photo, and a link to my resume
+- **Projects** — cards for the things I've built
+- **Contact** — LinkedIn, GitHub, and email
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Running locally
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Requires Node.js 18+.
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install
+npm run dev            # start the dev server
+npm run dev -- --open  # ...and open it in a browser
 ```
 
 ## Building
 
-To create a production version of your app:
-
 ```bash
-npm run build
+npm run build    # production build
+npm run preview  # preview that build locally
 ```
 
-You can preview the production build with `npm run preview`.
+The project uses `@sveltejs/adapter-auto`, which picks an adapter based on the deployment environment. To deploy somewhere it doesn't detect, swap in the [matching adapter](https://kit.svelte.dev/docs/adapters) in `svelte.config.js`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Project layout
+
+```text
+src/
+  routes/
+    +layout.svelte   navbar, footer, global styles
+    +page.svelte     all page sections and project cards
+  app.html           HTML shell
+static/              favicon and images
+```
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/eddie-lin-1363a5318/)
+- [GitHub](https://github.com/onetwothreefourfivesixe)
+- [edwardxuming.lin@gmail.com](mailto:edwardxuming.lin@gmail.com)
