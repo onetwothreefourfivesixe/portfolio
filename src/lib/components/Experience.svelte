@@ -8,7 +8,7 @@
         <p class="plate-label">The Works · Est. 1888 · Shift log</p>
         <h2>Experience</h2>
         <p class="intro-note">
-            Where the heavy lifting happens. Three shifts are on the clock right
+            Where the heavy lifting happens. two shifts are on the clock right
             now: cuneiform OCR research at TokenWorks and clinic software for
             Holistic Acupuncture.
         </p>

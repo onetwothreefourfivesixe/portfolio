@@ -5,7 +5,7 @@
     "github": "https://github.com/onetwothreefourfivesixe",
     "email": "edwardxuming.lin@gmail.com"
   },
-  "bio": "I am a student from Northern Virginia, studying Data Science and Computer Science at UC Berkeley. I'm interested in AI alignment/safety, robotics, machine learning, and the role of technology in society. In my free time I play Quizbowl, transcribe music, build PCs, read (mainly sci-fi), and spend time with friends and family.",
+  "bio": "I am a student from Northern Virginia, studying Data Science and Computer Science at UC Berkeley. I'm interested in AI alignment/safety, robotics, machine learning, and the role of technology in society. Outside of classes, I teach web development as part of the Hackathons @ Berkeley Club and volunteer at the YMCA in San Francisco Chinatown. In addition, I play Quizbowl, transcribe music, build PCs, read (mainly sci-fi), and spend time with friends and family.",
   "lines": [
     {
       "line": "A",
@@ -23,6 +23,11 @@
       "label": "Robotics"
     },
     {
+      "line": "9",
+      "color": "#cd6abd",
+      "label": "Teaching & mentorship"
+    },
+    {
       "line": "N",
       "color": "#fccc0a",
       "dark": true,
@@ -31,7 +36,7 @@
     {
       "line": "1",
       "color": "#ee352e",
-      "label": "Piano & transcribing music"
+      "label": "Transcribing music"
     },
     {
       "line": "7",
@@ -58,7 +63,7 @@
     {
       "years": "Jun – Aug 2026",
       "shift": "Shift 05",
-      "title": "AI Prompt Engineer Intern (HSGIP)",
+      "title": "AI Prompt Engineer Intern",
       "org": "CACI Agile Software Factory · Hybrid",
       "points": [
         "Supported the Border Enforcement Applications for Government Leading-Edge Information Technology program, delivering software for U.S. Customs and Border Protection.",
@@ -88,7 +93,7 @@
     {
       "years": "Jun – Aug 2025",
       "shift": "Shift 02",
-      "title": "Robotics Research Intern (ASSIP)",
+      "title": "Robotics Research Intern",
       "org": "Prof. Gregory Stein's Lab · George Mason University",
       "points": [
         "Researched robotic decision-making under limited information by building an interface between the AI model and its environment, then tested state-of-the-art planning models in both simulated and real settings.",
@@ -98,7 +103,7 @@
     {
       "years": "Jun – Aug 2025",
       "shift": "Shift 01",
-      "title": "Student Research Apprentice (SRAP)",
+      "title": "Student Research Apprentice",
       "org": "Pacific Northwest National Laboratory · Remote",
       "points": [
         "Collected and processed 200k+ state-level electrical outage reports to train a weather-outage prediction model.",
