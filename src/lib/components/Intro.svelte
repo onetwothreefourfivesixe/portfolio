@@ -9,8 +9,8 @@
                 src="/IMG20250517200848_01.jpg"
                 alt="Edward Lin"
                 class="portrait"
-                width="560"
-                height="560"
+                width="720"
+                height="720"
             />
             <div class="who-text">
                 <p class="eyebrow">Midtown · AD 2026</p>
@@ -65,8 +65,8 @@
     }
     .portrait {
         flex: none;
-        width: clamp(96px, 18vw, 140px);
-        height: clamp(96px, 18vw, 140px);
+        width: clamp(120px, 22vw, 300px);
+        height: clamp(120px, 22vw, 300px);
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid var(--glass-edge);
