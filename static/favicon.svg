@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Edward Lin · A City Through Time: a tower with a clock mounted half over its corner -->
+  <rect width="64" height="64" rx="12" fill="#1c2654"/>
+  <!-- ground -->
+  <rect x="6" y="56" width="52" height="3" rx="1.5" fill="#e89a74"/>
+  <!-- tower -->
+  <rect x="10" y="14" width="24" height="42" fill="#e89a74"/>
+  <rect x="14" y="8" width="16" height="6" fill="#e89a74"/>
+  <rect x="21" y="3" width="2" height="5" fill="#e89a74"/>
+  <g fill="#1c2654">
+    <rect x="14" y="19" width="5" height="6"/><rect x="25" y="19" width="5" height="6"/>
+    <rect x="14" y="29" width="5" height="6"/><rect x="25" y="29" width="5" height="6"/>
+    <rect x="14" y="39" width="5" height="6"/><rect x="25" y="39" width="5" height="6"/>
+    <rect x="19" y="48" width="6" height="8"/>
+  </g>
+  <!-- clock, over the tower's lower right corner -->
+  <circle cx="38" cy="35" r="13.5" fill="#1c2654"/>
+  <circle cx="38" cy="35" r="12" fill="#ffe6c2"/>
+  <circle cx="38" cy="35" r="9.5" fill="none" stroke="#1c2654" stroke-width="1.5"/>
+  <g stroke="#1c2654" stroke-width="2.5" stroke-linecap="round">
+    <line x1="38" y1="35" x2="38" y2="28"/>
+    <line x1="38" y1="35" x2="43" y2="37"/>
+  </g>
+  <circle cx="38" cy="35" r="1.5" fill="#1c2654"/>
+</svg>
