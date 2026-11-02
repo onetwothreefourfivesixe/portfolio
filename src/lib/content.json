@@ -1,0 +1,181 @@
+{
+  "links": {
+    "resume": "https://docs.google.com/document/d/1yASoDh2WNXUfGnduMeqlCCW8SqkGNP-x/edit?usp=sharing&ouid=116429660102535537903&rtpof=true&sd=true",
+    "linkedin": "https://www.linkedin.com/in/eddie-x-lin/",
+    "github": "https://github.com/onetwothreefourfivesixe",
+    "email": "edwardxuming.lin@gmail.com"
+  },
+  "bio": "I am a student from Northern Virginia, studying Data Science and Computer Science at UC Berkeley. I'm interested in AI alignment/safety, robotics, machine learning, and the role of technology in society. In my free time I play Quizbowl, transcribe music, build PCs, read (mainly sci-fi), and spend time with friends and family.",
+  "lines": [
+    {
+      "line": "A",
+      "color": "#0039a6",
+      "label": "AI alignment & safety"
+    },
+    {
+      "line": "B",
+      "color": "#ff6319",
+      "label": "Data Science & CS @ UC Berkeley"
+    },
+    {
+      "line": "4",
+      "color": "#00933c",
+      "label": "Robotics"
+    },
+    {
+      "line": "N",
+      "color": "#fccc0a",
+      "dark": true,
+      "label": "History & quizbowl"
+    },
+    {
+      "line": "1",
+      "color": "#ee352e",
+      "label": "Piano & transcribing music"
+    },
+    {
+      "line": "7",
+      "color": "#b933ad",
+      "label": "Building PCs"
+    },
+    {
+      "line": "F",
+      "color": "#cfe3f3",
+      "label": "Science fiction"
+    }
+  ],
+  "jobs": [
+    {
+      "years": "Aug 2026 – now",
+      "shift": "Shift 07",
+      "title": "Data Discovery Research Intern",
+      "org": "TokenWorks LLC · Remote",
+      "points": [
+        "Developing and testing approaches to segmenting cuneiform signs on photographed tablets, the current bottleneck in TokenWorks' cuneiform OCR pipeline.",
+        "Using a U-Net with a ResNet-34 backbone to pick out high-level features on tablet images and detect lines of cuneiform."
+      ]
+    },
+    {
+      "years": "Jun – Aug 2026",
+      "shift": "Shift 05",
+      "title": "AI Prompt Engineer Intern (HSGIP)",
+      "org": "CACI Agile Software Factory · Hybrid",
+      "points": [
+        "Supported the Border Enforcement Applications for Government Leading-Edge Information Technology program, delivering software for U.S. Customs and Border Protection.",
+        "Designed, tested, and optimized LLM prompts so outputs stayed reliable and complex requirements translated into working AI interactions."
+      ]
+    },
+    {
+      "years": "May 2026 – now",
+      "shift": "Shift 04",
+      "title": "IT Specialist",
+      "org": "Holistic Acupuncture · Hybrid",
+      "points": [
+        "Building a medical software system that centralizes appointment scheduling for patients and clinic staff, with speech-to-text transcription to speed up clinical note-taking, all within HIPAA compliance.",
+        "Running hands-on testing sessions with clinic employees to make sure every feature is usable by the people who depend on it."
+      ]
+    },
+    {
+      "years": "May – Aug 2026",
+      "shift": "Shift 03",
+      "title": "AI Engineer",
+      "org": "Pyri · Remote",
+      "points": [
+        "Engineered a proof-of-concept AI for a reading app that builds and updates a symbolic \"mental model\" of the reader as they go.",
+        "Built demos that watch ongoing reader interactions to predict their next questions and deductions, then wired LLMs in to turn the idea into a working prototype."
+      ]
+    },
+    {
+      "years": "Jun – Aug 2025",
+      "shift": "Shift 02",
+      "title": "Robotics Research Intern (ASSIP)",
+      "org": "Prof. Gregory Stein's Lab · George Mason University",
+      "points": [
+        "Researched robotic decision-making under limited information by building an interface between the AI model and its environment, then tested state-of-the-art planning models in both simulated and real settings.",
+        "Developed symbolic interior environments, from apartments to office spaces, for planning algorithms to navigate."
+      ]
+    },
+    {
+      "years": "Jun – Aug 2025",
+      "shift": "Shift 01",
+      "title": "Student Research Apprentice (SRAP)",
+      "org": "Pacific Northwest National Laboratory · Remote",
+      "points": [
+        "Collected and processed 200k+ state-level electrical outage reports to train a weather-outage prediction model.",
+        "Improved LSTM, TCN, and Transformer models that forecast wind speeds around wind farms a day ahead, cutting error by 20%.",
+        "Presented findings to lab researchers and contributed analyses to model-training discussions."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Luminate",
+      "desc": "Luminate is an agentic fact-checking and AI-content detection platform for social media, grown from a 2026 Innovation Intelligence Hackathon prototype into a real verification tool. A multi-agent backend uses retrieval-augmented generation over a PostgreSQL vector database to evaluate claims, cross-reference sources, and run multi-step verification on its own, while a React web app and a companion browser extension bring the analysis into the page you are reading.",
+      "wrought": "Wrought in Python, React & Postgres · RAG agents",
+      "links": [
+        {
+          "label": "Source",
+          "href": "https://github.com/Illuminare-AI/Luminate"
+        },
+        {
+          "label": "Watch the demo",
+          "href": "https://youtu.be/gPryaq86BUY"
+        }
+      ]
+    },
+    {
+      "name": "Cal Hacks 13.0 Hardware Checkout",
+      "desc": "An analysis of request and inventory data from the hardware lending desk at Cal Hacks 13.0, done to improve staffing, stocking, and the hacker experience at future Hackathons @ Berkeley events. Demand peaked in the first hour, four categories were oversubscribed with boards requested at nearly three times available stock, and bulk components sat heavily overstocked, so the recommendation was to shift budget toward boards, kits, peripherals, and sensors.",
+      "wrought": "Wrought in Python · Pandas & Matplotlib",
+      "links": [
+        {
+          "label": "Source",
+          "href": "https://github.com/onetwothreefourfivesixe/CalHacks13.0-Hardware-Checkout-Analysis"
+        }
+      ]
+    },
+    {
+      "name": "QBVReader",
+      "desc": "QBVReader is a Quizbowl practice app that recreates tournament reading conditions, tracks performance, and shows players their strengths and weaknesses by category. It serves 1,900+ users and 190+ high school and college teams nationwide, including Dartmouth, Virginia Tech, and Purdue, and improves accessibility for players with hearing or speaking disabilities.",
+      "wrought": "Wrought for the web · 1,900+ users, 190+ teams",
+      "links": [
+        {
+          "label": "View the work",
+          "href": "https://www.qbv-reader.com/"
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/onetwothreefourfivesixe/QBVReader-Web"
+        }
+      ]
+    },
+    {
+      "name": "Human Decision-Making Through Chess",
+      "desc": "A research project on whether neural networks can model human decision-making rather than just optimal play, using aggressive chess styles as the test case. Two networks trained with TensorFlow, a convolutional one and a standard one, read the board state to score aggression and move quality from features like king safety, mobility, and pawn structure. The aggression classifier reached 99.65% accuracy and exposed a real trade-off between aggression and move quality, which is exactly the kind of gap between what a model optimizes and what we actually want that draws me to alignment work.",
+      "wrought": "Wrought in Python · TensorFlow · 99.65% accuracy",
+      "links": [
+        {
+          "label": "Source",
+          "href": "https://github.com/onetwothreefourfivesixe/InspiritChessAI"
+        }
+      ]
+    },
+    {
+      "name": "Pathway Paver",
+      "desc": "Pathway Paver is a grid-based puzzle game where players guide cars to their colour-matched destinations by placing road tiles. Each level adds limited resources, turn constraints, and obstacles such as trees, so routes have to be planned to avoid collisions and dead ends. Nicholas Lee and I built it for the 2025 McLean Hackathon, where it took first place.",
+      "wrought": "Wrought for the 2025 McLean Hackathon · first place",
+      "links": [
+        {
+          "label": "Source",
+          "href": "https://github.com/onetwothreefourfivesixe/PathwayPaver"
+        }
+      ]
+    },
+    {
+      "name": "AI Adoption in the US Military",
+      "desc": "An ongoing research paper on the integration of AI into Defense Department systems in the context of the Iran War. It looks at the technical implementation, how Defense employees understand and govern the systems internally, and the consequences for decision-making inside the military and for the actions it takes outside it.",
+      "wrought": "Wrought in prose · in progress",
+      "links": []
+    }
+  ]
+}

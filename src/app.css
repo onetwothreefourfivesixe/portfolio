@@ -1,0 +1,195 @@
+/* City Through Time: global styles
+   Era tokens sit at the top of :root; the nav bar reads body[data-era], which Hud.svelte sets from the renderer.
+   Panel styles live in their components: Intro (2026 glass), Experience (1888 steel plate),
+   Projects (1347 folio), Contact (2150 console). */
+:root {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+body {
+  margin: 0;
+}
+img {
+  max-width: 100%;
+}
+[hidden] {
+  display: none !important;
+}
+
+/* Layout: one fixed, procedurally drawn skyline behind four "districts". Scrolling moves the town through time;
+   each section is a panel built from its era's materials (glass, riveted steel, vellum, hologram). Single-theme by design. */
+:root {
+  /* Midtown, present day */
+  --glass: rgba(246, 250, 252, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.8);
+  --steel-ink: #0e1b26;
+  --signal: #0b5fb8;
+  /* The Works, 1888 */
+  --plate: #29221d;
+  --plate-dark: #16110e;
+  --soot-ink: #efe3cf;
+  --brass: #e3a14a;
+  --rust: #a4502c;
+  /* Old Town, 1347 */
+  --vellum: #f3e6c6;
+  --iron-gall: #2e2017;
+  --rubric: #a3271b;
+  --gilt: #9a7424;
+  /* Skyport, 2150 */
+  --void: #060820;
+  --cyan: #3ef2ff;
+  --magenta: #ff3ea5;
+  --holo: #d9f8ff;
+
+  --f-modern: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-stencil: "Saira Stencil One", "Impact", "Arial Narrow", sans-serif;
+  --f-works: "Saira Condensed", "Arial Narrow", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --f-goth: "Grenze Gotisch", "UnifrakturMaguntia", Georgia, serif;
+  --f-book: "EB Garamond", Garamond, "Times New Roman", serif;
+  --f-fut: "Michroma", "Eurostile", "Arial Black", sans-serif;
+  --f-fut-body: "Chakra Petch", "Segoe UI", sans-serif;
+
+  --gl: max(16px, env(safe-area-inset-left, 0px));
+  --gr: max(16px, env(safe-area-inset-right, 0px));
+}
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+body {
+  background: #1c2654;
+  color: var(--steel-ink);
+  font-family: var(--f-modern);
+}
+#city {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+main {
+  position: relative;
+  z-index: 1;
+}
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+a {
+  color: inherit;
+}
+
+/* ---------- HUD (restyles per era) ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--hud-bg);
+}
+body[data-era="modern"] {
+  --hud-bg: rgba(250, 252, 253, 0.82);
+  --hud-fg: #0e1b26;
+  --hud-line: rgba(14, 27, 38, 0.12);
+  --hud-r: 999px;
+  --hud-font: var(--f-modern);
+}
+body[data-era="industrial"] {
+  --hud-bg: #29221d;
+  --hud-fg: #efe3cf;
+  --hud-line: #e3a14a;
+  --hud-r: 2px;
+  --hud-font: var(--f-works);
+}
+body[data-era="medieval"] {
+  --hud-bg: #f3e6c6;
+  --hud-fg: #2e2017;
+  --hud-line: #2e2017;
+  --hud-r: 0px;
+  --hud-font: var(--f-book);
+}
+body[data-era="future"] {
+  --hud-bg: rgba(6, 8, 32, 0.8);
+  --hud-fg: #d9f8ff;
+  --hud-line: #3ef2ff;
+  --hud-r: 6px;
+  --hud-font: var(--f-fut-body);
+}
+
+/* ---------- Sections ---------- */
+section {
+  scroll-margin-top: calc(88px - 20vh);
+  display: flex;
+  justify-content: center;
+  padding-left: var(--gl);
+  padding-right: var(--gr);
+  padding-block: 20vh 48vh;
+}
+section#intro {
+  scroll-margin-top: 0;
+  padding-block: calc(96px + 6vh) 44vh;
+}
+.panel {
+  width: 100%;
+  min-width: 0;
+}
+.cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 34px;
+  padding: 12px 22px;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+.cue:hover,
+.cue:focus-visible {
+  background: color-mix(in srgb, currentColor 22%, transparent);
+  transform: translateY(2px);
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+.intro-note {
+  margin-top: 14px;
+  max-width: 60ch;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 var(--gr) 24px var(--gl);
+  margin-top: -36vh;
+  font-family: var(--f-fut-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9fc6d6;
+}
