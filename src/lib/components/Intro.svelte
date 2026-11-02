@@ -65,8 +65,8 @@
     }
     .portrait {
         flex: none;
-        width: clamp(120px, 22vw, 300px);
-        height: clamp(120px, 22vw, 300px);
+        width: clamp(120px, 22vw, 200px);
+        height: clamp(120px, 22vw, 200px);
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid var(--glass-edge);
