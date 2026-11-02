@@ -30,7 +30,7 @@
                 </article>
             {/each}
         </div>
-        <a class="cue" href="#projects">Further back to 1347 ↓</a>
+        <a class="cue" href="#projects">Projects · further back to AD 1347 ↓</a>
     </div>
 </section>
 

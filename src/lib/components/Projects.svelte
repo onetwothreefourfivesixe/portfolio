@@ -27,7 +27,7 @@
                 </article>
             {/each}
         </div>
-        <a class="cue" href="#contact">Leap ahead to 2150 ↓</a>
+        <a class="cue" href="#contact">Contact · leap ahead to AD 2150 ↓</a>
     </div>
 </section>
 

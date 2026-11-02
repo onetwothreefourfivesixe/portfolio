@@ -38,7 +38,10 @@
                 </li>
             {/each}
         </ul>
-        <a class="cue" href="#experience">Ride back to 1888 ↓</a>
+        <div class="cues">
+            <a class="cue" href="#experience">Experience · ride back to AD 1888 ↓</a>
+            <a class="cue" href="#contact">Contact me · skip to AD 2150 ↓</a>
+        </div>
     </div>
 </section>
 
@@ -134,6 +137,11 @@
     }
     .bullet.dark {
         color: #111;
+    }
+    .cues {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 14px;
     }
     .cue {
         color: var(--signal);
