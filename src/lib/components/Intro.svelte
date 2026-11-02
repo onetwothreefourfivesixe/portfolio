@@ -23,10 +23,8 @@
                 href={links.resume}
                 target="_blank"
                 rel="noopener noreferrer">resume</a
-            >.
-            <!-- This page is a
-            town: scroll to rewind it through the industrial age to its medieval old town, then jump ahead to where it
-            is going. -->
+            >. Scroll down to learn more about my experiences, projects, and
+            where you can contact me!
         </p>
         <h2>Lines I ride</h2>
         <ul class="lines">
