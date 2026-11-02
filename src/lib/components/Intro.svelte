@@ -9,8 +9,8 @@
                 src="/IMG20250517200848_01.jpg"
                 alt="Edward Lin"
                 class="portrait"
-                width="280"
-                height="280"
+                width="560"
+                height="560"
             />
             <div class="who-text">
                 <p class="eyebrow">Midtown · AD 2026</p>
