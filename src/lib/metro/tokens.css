@@ -1,0 +1,66 @@
+/* Metro design tokens, scoped to .metro. Fonts (Inter, Doto) load in routes/+layout.svelte. */
+
+.metro {
+	--metro-red: #bf0d3e;
+	--metro-blue: #009cde;
+	--metro-green: #00b140;
+	--metro-yellow: #ffd100;
+
+	--metro-ink: #1d1d1b;
+	--metro-body: #3a3732;
+	--metro-muted: #5e5a54;
+	--metro-ground: #eeece7;
+	--metro-paper: #ffffff;
+	--metro-paper-2: #f7f5f0;
+	--metro-rule: #e2ddd3;
+	--metro-bronze: #3b2f27;
+	--metro-sign: #2b2622;
+	--metro-sign-text: #d6cfc4;
+	--metro-led: #ffb31a;
+	--metro-led-bg: #0e0d0c;
+	--metro-water: #d3e2e6;
+	--metro-water-text: #6e8c96;
+	--metro-focus: #009cde;
+
+	--metro-font: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	--metro-led-font: Doto, 'Courier New', monospace;
+	--metro-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+	font-family: var(--metro-font);
+	color: var(--metro-ink);
+	background: var(--metro-ground);
+}
+
+.metro *,
+.metro *::before,
+.metro *::after {
+	box-sizing: border-box;
+}
+
+.metro button {
+	font-family: inherit;
+}
+
+.metro :is(button, a):focus-visible {
+	outline: 3px solid var(--metro-focus);
+	outline-offset: 3px;
+}
+
+/* Line badge, used in the header, panel, list and departures board */
+.metro .badge {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	font-weight: 800;
+	font-family: var(--metro-font);
+}
+
+.metro .kicker {
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--metro-muted);
+}

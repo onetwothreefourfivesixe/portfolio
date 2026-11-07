@@ -1,22 +1,39 @@
 <script lang="ts">
-    import CityCanvas from "#lib/components/CityCanvas.svelte";
-    import Hud from "#lib/components/Hud.svelte";
-    import Intro from "#lib/components/Intro.svelte";
-    import Experience from "#lib/components/Experience.svelte";
-    import Projects from "#lib/components/Projects.svelte";
-    import Contact from "#lib/components/Contact.svelte";
+    import { onMount } from "svelte";
+    import MetroPortfolio from "#lib/metro/MetroPortfolio.svelte";
+    import { STATIONS, type StationId } from "#lib/metro/stations.ts";
 
-    const year = new Date().getFullYear();
+    // The open station lives in the URL hash (/#p3), so stations can be linked and Back works.
+    const fromHash = (): StationId => {
+        const id = decodeURIComponent(location.hash.slice(1)); // client only: onMount and popstate
+        return id in STATIONS ? id : "hub";
+    };
+
+    // Server render and hydration start at Central; a hash in the URL is applied after mount.
+    let key = $state(0);
+    let initial = $state<StationId>("hub");
+    onMount(() => {
+        const id = fromHash();
+        if (id !== "hub") {
+            initial = id;
+            key++;
+        }
+    });
+
+    function onchange(id: StationId) {
+        const hash = id === "hub" ? "" : `#${id}`;
+        if (location.hash !== hash) history.pushState(null, "", hash || location.pathname);
+    }
+
+    // Back / forward: reopen at the station in the URL.
+    function onpopstate() {
+        initial = fromHash();
+        key++;
+    }
 </script>
 
-<CityCanvas />
-<Hud />
+<svelte:window {onpopstate} />
 
-<main>
-    <Intro />
-    <Experience />
-    <Projects />
-    <Contact />
-</main>
-
-<footer>© {year} Edward Lin · A town built over 803 years</footer>
+{#key key}
+    <MetroPortfolio {initial} {onchange} />
+{/key}

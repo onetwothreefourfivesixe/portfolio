@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { bio, lines, links } from "#lib/content.ts";
+    import { bio, links } from "#lib/content.ts";
 </script>
 
 <section id="intro" data-era="modern">
@@ -26,18 +26,6 @@
             >. Scroll down to learn more about my experiences, projects, and
             where you can contact me!
         </p>
-        <h2>Lines I ride</h2>
-        <ul class="lines">
-            {#each lines as l (l.line)}
-                <li>
-                    <span
-                        class="bullet"
-                        class:dark={l.dark}
-                        style="--c: {l.color}">{l.line}</span
-                    >{l.label}
-                </li>
-            {/each}
-        </ul>
         <div class="cues">
             <a class="cue" href="#experience">Experience · ride back to AD 1888 ↓</a>
             <a class="cue" href="#contact">Contact me · skip to AD 2150 ↓</a>
@@ -101,44 +89,8 @@
         color: var(--signal);
         font-weight: 600;
     }
-    h2 {
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        margin-top: 34px;
-        margin-bottom: 14px;
-        font-weight: 600;
-    }
-    .lines {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 12px 20px;
-    }
-    .lines li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.98rem;
-    }
-    .bullet {
-        flex: none;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: var(--c);
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-        font-size: 0.88rem;
-    }
-    .bullet.dark {
-        color: #111;
-    }
     .cues {
+        margin-top: 34px;
         display: flex;
         flex-wrap: wrap;
         gap: 0 14px;

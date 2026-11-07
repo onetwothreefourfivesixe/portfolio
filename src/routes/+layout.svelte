@@ -4,9 +4,9 @@
     import type { Snippet } from "svelte";
     let { children }: { children: Snippet } = $props();
 
-    const title = "Edward Lin — A City Through Time";
+    const title = "Edward Lin — Portfolio";
     const description =
-        "Edward Lin's single-page portfolio: one riverside town that grows from 1347 to 2150 as you scroll.";
+        "Edward Lin's portfolio as a transit map: ride the Experience, Projects, Contact and Hobbies & Clubs lines from Central.";
     const image = `${page.url.origin}/og.png`;
 </script>
 
@@ -28,12 +28,12 @@
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <meta name="theme-color" content="#1c2654" />
+    <meta name="theme-color" content="#3b2f27" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Saira+Stencil+One&family=Saira+Condensed:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Grenze+Gotisch:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Michroma&family=Chakra+Petch:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Doto:wght@700;900&display=swap"
     />
 </svelte:head>
 

@@ -5,54 +5,18 @@
     "github": "https://github.com/onetwothreefourfivesixe",
     "email": "edwardxuming.lin@gmail.com"
   },
-  "bio": "I am a student from Northern Virginia, studying Data Science and Computer Science at UC Berkeley. I'm interested in AI alignment/safety, robotics, machine learning, and the role of technology in society. Outside of classes, I teach web development as part of the Hackathons @ Berkeley Club and volunteer at the YMCA in San Francisco Chinatown. In addition, I play Quizbowl, transcribe music, build PCs, read (mainly sci-fi), and spend time with friends and family.",
-  "lines": [
-    {
-      "line": "A",
-      "color": "#0039a6",
-      "label": "AI alignment & safety"
-    },
-    {
-      "line": "B",
-      "color": "#ff6319",
-      "label": "Data Science & CS @ UC Berkeley"
-    },
-    {
-      "line": "4",
-      "color": "#00933c",
-      "label": "Robotics"
-    },
-    {
-      "line": "9",
-      "color": "#cd6abd",
-      "label": "Teaching & mentorship"
-    },
-    {
-      "line": "N",
-      "color": "#fccc0a",
-      "dark": true,
-      "label": "History & quizbowl"
-    },
-    {
-      "line": "1",
-      "color": "#ee352e",
-      "label": "Transcribing music"
-    },
-    {
-      "line": "7",
-      "color": "#b933ad",
-      "label": "Building PCs"
-    },
-    {
-      "line": "F",
-      "color": "#cfe3f3",
-      "label": "Science fiction"
-    }
-  ],
+  "tagline": "Data Science & CS @ UC Berkeley",
+  "bio": "Hi! I am a student from Northern Virginia, studying Data Science and Computer Science at UC Berkeley. I'm interested in AI alignment/safety, robotics, machine learning, and the role of technology in society. Outside of classes, I teach web development as part of the Hackathons @ Berkeley Club and am a member of ACE Coaches, and teach students at the YMCA in San Francisco Chinatown. In addition, I play Quizbowl, transcribe music, build PCs, read (mainly sci-fi), and spend time with friends and family.",
+  "status": "Open to internships, research & collaborations",
+  "contact": {
+    "note": "Open to internships, research, and collaborations, especially anything in AI alignment and safety. Email is the fasest way to reach me.",
+    "basedAt": "UC Berkeley",
+    "from": "Northern Virginia"
+  },
   "jobs": [
     {
+      "station": "TokenWorks",
       "years": "Aug 2026 – now",
-      "shift": "Shift 07",
       "title": "Data Discovery Research Intern",
       "org": "TokenWorks LLC · Remote",
       "points": [
@@ -61,8 +25,8 @@
       ]
     },
     {
+      "station": "CACI",
       "years": "Jun – Aug 2026",
-      "shift": "Shift 05",
       "title": "AI Prompt Engineer Intern",
       "org": "CACI Agile Software Factory · Hybrid",
       "points": [
@@ -71,8 +35,8 @@
       ]
     },
     {
+      "station": "Holistic Acupuncture",
       "years": "May 2026 – now",
-      "shift": "Shift 04",
       "title": "IT Specialist",
       "org": "Holistic Acupuncture · Hybrid",
       "points": [
@@ -81,8 +45,8 @@
       ]
     },
     {
+      "station": "Pyri",
       "years": "May – Aug 2026",
-      "shift": "Shift 03",
       "title": "AI Engineer",
       "org": "Pyri · Remote",
       "points": [
@@ -91,8 +55,8 @@
       ]
     },
     {
+      "station": "Stein Lab, GMU",
       "years": "Jun – Aug 2025",
-      "shift": "Shift 02",
       "title": "Robotics Research Intern",
       "org": "Prof. Gregory Stein's Lab · George Mason University",
       "points": [
@@ -101,8 +65,8 @@
       ]
     },
     {
+      "station": "PNNL",
       "years": "Jun – Aug 2025",
-      "shift": "Shift 01",
       "title": "Student Research Apprentice",
       "org": "Pacific Northwest National Laboratory · Remote",
       "points": [
@@ -115,8 +79,9 @@
   "projects": [
     {
       "name": "Luminate",
+      "station": "Luminate",
+      "built": "Python, React & Postgres · RAG agents",
       "desc": "Luminate is an agentic fact-checking and AI-content detection platform for social media, grown from a 2026 Innovation Intelligence Hackathon prototype into a real verification tool. A multi-agent backend uses retrieval-augmented generation over a PostgreSQL vector database to evaluate claims, cross-reference sources, and run multi-step verification on its own, while a React web app and a companion browser extension bring the analysis into the page you are reading.",
-      "wrought": "Wrought in Python, React & Postgres · RAG agents",
       "links": [
         {
           "label": "Source",
@@ -130,8 +95,9 @@
     },
     {
       "name": "Cal Hacks 13.0 Hardware Checkout",
-      "desc": "An analysis of request and inventory data from the hardware lending desk at Cal Hacks 13.0, done to improve staffing, stocking, and the hacker experience at future Hackathons @ Berkeley events. Demand peaked in the first hour, four categories were oversubscribed with boards requested at nearly three times available stock, and bulk components sat heavily overstocked, so the recommendation was to shift budget toward boards, kits, peripherals, and sensors.",
-      "wrought": "Wrought in Python · Pandas & Matplotlib",
+      "station": "Cal Hacks Checkout",
+      "built": "Python · Pandas & Matplotlib",
+      "desc": "This projecy involved analysis of request and inventory data from the hardware lending desk at Cal Hacks 13.0, done to improve staffing, stocking, and the hacker experience at future Hackathons @ Berkeley events. Demand peaked in the first hour, four categories were oversubscribed with boards requested at nearly three times available stock, and bulk components sat heavily overstocked, so the recommendation was to shift budget toward boards, kits, peripherals, and sensors.",
       "links": [
         {
           "label": "Source",
@@ -141,8 +107,9 @@
     },
     {
       "name": "QBVReader",
+      "station": "QBVReader",
+      "built": "Web app · 1,900+ users, 190+ teams",
       "desc": "QBVReader is a Quizbowl practice app that recreates tournament reading conditions, tracks performance, and shows players their strengths and weaknesses by category. It serves 1,900+ users and 190+ high school and college teams nationwide, including Dartmouth, Virginia Tech, and Purdue, and improves accessibility for players with hearing or speaking disabilities.",
-      "wrought": "Wrought for the web · 1,900+ users, 190+ teams",
       "links": [
         {
           "label": "View the work",
@@ -156,8 +123,9 @@
     },
     {
       "name": "Human Decision-Making Through Chess",
-      "desc": "A research project on whether neural networks can model human decision-making rather than just optimal play, using aggressive chess styles as the test case. Two networks trained with TensorFlow, a convolutional one and a standard one, read the board state to score aggression and move quality from features like king safety, mobility, and pawn structure. The aggression classifier reached 99.65% accuracy and exposed a real trade-off between aggression and move quality, which is exactly the kind of gap between what a model optimizes and what we actually want that draws me to alignment work.",
-      "wrought": "Wrought in Python · TensorFlow · 99.65% accuracy",
+      "station": "Chess Decision-Making",
+      "built": "Python · TensorFlow · 99.65% accuracy",
+      "desc": "This was a research project on whether neural networks can model human decision-making rather than just optimal play, using aggressive chess styles as the test case. Two networks trained with TensorFlow, a convolutional one and a standard one, read the board state to score aggression and move quality from features like king safety, mobility, and pawn structure. The aggression classifier reached 99.65% accuracy and exposed a real trade-off between aggression and move quality, which is exactly the kind of gap between what a model optimizes and what we actually want that draws me to alignment work.",
       "links": [
         {
           "label": "Source",
@@ -167,8 +135,9 @@
     },
     {
       "name": "Pathway Paver",
+      "station": "Pathway Paver",
+      "built": "2025 McLean Hackathon · first place",
       "desc": "Pathway Paver is a grid-based puzzle game where players guide cars to their colour-matched destinations by placing road tiles. Each level adds limited resources, turn constraints, and obstacles such as trees, so routes have to be planned to avoid collisions and dead ends. Nicholas Lee and I built it for the 2025 McLean Hackathon, where it took first place.",
-      "wrought": "Wrought for the 2025 McLean Hackathon · first place",
       "links": [
         {
           "label": "Source",
@@ -178,9 +147,42 @@
     },
     {
       "name": "AI Adoption in the US Military",
-      "desc": "An ongoing research paper on the integration of AI into Defense Department systems in the context of the Iran War. It looks at the technical implementation, how Defense employees understand and govern the systems internally, and the consequences for decision-making inside the military and for the actions it takes outside it.",
-      "wrought": "Wrought in prose · in progress",
+      "station": "AI in the Military",
+      "built": "Research paper · in progress",
+      "desc": "I am currently working on an ongoing research paper on the integration of AI into Defense Department systems in the context of the Iran War. It looks at the technical implementation, how Defense employees understand and govern the systems internally, and the consequences for decision-making inside the military and for the actions it takes outside it.",
       "links": []
+    }
+  ],
+  "hobbies": [
+    {
+      "station": "Quizbowl",
+      "meta": "History & quizbowl",
+      "desc": "I have been playing [Quizbowl](https://en.wikipedia.org/wiki/Quiz_bowl) since the start of middle school, specializing history, geography, and mythology. I most recently competed in [ACF Fall 2026](https://hsquizbowl.org/db/tournaments/10688/stats/all_games/), where my team won 1st place."
+    },
+    {
+      "station": "Transcribing music",
+      "meta": "Music",
+      "desc": "I transcribe music in my spare time. You can find some of my work [here](https://onlinesequencer.net/members/179356) at Online Sequencer."
+    },
+    {
+      "station": "Building PCs",
+      "meta": "Hardware",
+      "desc": "I started building PCs during COVID, and have continued since then, mainly at the request of friends or family."
+    },
+    {
+      "station": "Reading",
+      "meta": "Reading",
+      "desc": "I read a lot, mainly science fiction and biographies. Favorite books include Dune by Frank Herbert, Stand on Zanzibar By John Brunner, House of Huawei, and The Philosopher in the Valley by Michael Steinberger."
+    },
+    {
+      "station": "Hackathons @ Berkeley",
+      "meta": "Club · Cubstart Director",
+      "desc": "I'm a Director at Hackathons @ Berkeley on the Cubstart, where I teach web development to a class of 50+ UC Berkeley students. In addition, I have worked on the course website and grading software for webpage homework submission."
+    },
+    {
+      "station": "Ace Coaches, YMCA Chinatown",
+      "meta": "Volunteering · San Francisco",
+      "desc": "I volunteer at the YMCA in San Francisco Chinatown as part of the Ace Coaches UC Berkeley club, teaching mainly math and english."
     }
   ]
 }
