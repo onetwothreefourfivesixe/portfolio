@@ -2244,12 +2244,15 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     TERRA = ["#b5643c", "#a85a34", "#c27248"],
     OLIVE = ["#8d9466", "#7b8458", "#9aa070", "#6f7a50"],
     CYP = "#3c5634";
-  function gHouse(c, r, x, wm, k, gy) {
+  const gHouseH = (r, k) => (3.2 + r() * 2.6) * k;
+  // Highest point a limewashed house reaches above its ground line (wall + roof or roof-garden olive)
+  const G_ROOF = 2.2;
+  // foot: how far the wall runs below the ground line (deep on the quay, where the stones cover it; short on the hill)
+  function gHouse(c, r, x, wm, k, gy, h = gHouseH(r, k), foot = 8 * k) {
     const w = wm * k,
-      h = (3.2 + r() * 2.6) * k,
       col = pick(r, LIME);
-    R(c, x, gy - h, w, h + 8 * k, col);
-    R(c, x + w * 0.8, gy - h, w * 0.2, h + 8 * k, "rgba(120,90,60,.16)");
+    R(c, x, gy - h, w, h + foot, col);
+    R(c, x + w * 0.8, gy - h, w * 0.2, h + foot, "rgba(120,90,60,.16)");
     if (r() < 0.65) {
       const rh = Math.min(1.8 * k, w * 0.2);
       P(c, pick(r, TERRA), x - 0.4 * k, gy - h + 0.2 * k, x + w * 0.5, gy - h - rh, x + w + 0.4 * k, gy - h + 0.2 * k);
@@ -2312,8 +2315,8 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     c.ellipse(x, gy - h / 2, Math.max(1, h * 0.12), h / 2, 0, 0, 6.2832);
     c.fill();
   }
-  function olive(c, r, x, y, k) {
-    const rr = (1.6 + r() * 1.3) * k;
+  const oliveR = (r, k) => (1.6 + r() * 1.3) * k;
+  function olive(c, r, x, y, k, rr = oliveR(r, k)) {
     R(c, x - 0.25 * k, y, Math.max(1, 0.5 * k), rr * 1.1, "#5a4632");
     for (let i = 0; i < 3; i++)
       dot(c, x + (r() - 0.5) * rr, y - r() * rr * 0.5, rr * (0.55 + r() * 0.3), pick(r, OLIVE));
@@ -2348,50 +2351,89 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     }
     for (let x = -10; x < W; ) x += gHouse(c, r, x, 5 + r() * 3, k * 0.8, base - 4 * k);
     haze(c, "233,228,210", 0.24);
-    // hillside: olive groves, a few houses, cypresses
+    // The quay and the hillside are planned before anything is drawn. Each house, tree and civic building
+    // claims the box its visible part covers, and a new piece is only placed where its box is free, so
+    // nothing hides part of anything else. Pieces are then drawn back to front (by their ground line).
     const Mr = layer(base - TOP, TOP + 2),
-      m = Mr.c;
-    for (let i = 0; i < 90; i++) {
-      const x = z.g1 + 4 * k + r() * (z.hx + 2.2 * z.sg - z.g1 - 4 * k),
-        top = hillY(x, k);
-      if (base - top < 5 * k) continue;
-      const y = top + 3 * k + r() * (base - top - 3 * k) * 0.9;
-      if (Math.abs(x - z.hx) < plat(k) + 2 * k && y < top + 10 * k) continue;
-      if (r() < 0.14) cypress(m, x, y + 2 * k, (5 + r() * 4) * k, CYP);
-      else olive(m, r, x, y, k);
-    }
-    slopeRows(z, (x, frac) => {
-      const wm = 5 + r() * 3,
-        w = wm * k,
-        xm = x + w / 2,
-        hh = base - hillY(xm, k);
-      if (hh * frac > 9 * k && (Math.abs(xm - z.hx) > castleClear(z, k) || frac < 0.62) && r() < 0.42)
-        gHouse(m, r, x, wm, k, base - hh * frac + 2 * k);
-      return w * (0.9 + r() * 0.8);
-    });
-    // the quay: stoa and tholos east of the propylon, houses elsewhere; the temple and gate sites stay clear
+      m = Mr.c,
+      boxes = [],
+      items = [];
+    const free = (x0, y0, x1, y1, pad) =>
+      boxes.every((b) => x1 + pad <= b[0] || x0 - pad >= b[2] || y1 + pad <= b[1] || y0 - pad >= b[3]);
+    const claim = (x0, y0, x1, y1, gy, draw) => {
+      boxes.push([x0, y0, x1, y1]);
+      items.push({ gy, draw });
+    };
+    // civic quarter on the quay: stoa, tholos, two statues and the smoking altar
     const sx = z.g1 + 3 * k,
       sw = Math.min(70 * k, W * 0.22),
       tx = sx + sw + 6 * k;
-    stoa(m, sx, sw, k, base);
-    tholos(m, tx, k, base);
-    statue(m, sx - 1.6 * k, k, base);
-    statue(m, tx + 5.5 * k, k, base);
-    R(m, tx + 8 * k, base - 1.4 * k, 2 * k, 1.4 * k, "#e6d8b8"); // altar
+    claim(sx - 2.6 * k, base - 13 * k, tx + 11 * k, base, base, () => {
+      stoa(m, sx, sw, k, base);
+      tholos(m, tx, k, base);
+      statue(m, sx - 1.6 * k, k, base);
+      statue(m, tx + 5.5 * k, k, base);
+      R(m, tx + 8 * k, base - 1.4 * k, 2 * k, 1.4 * k, "#e6d8b8"); // altar
+    });
     src.push({
       x: tx + 9 * k,
       y: base - 1.4 * k,
       rate: 1.2,
       o: { r0: (1.2 * k) / 10, vx: 4, vy: -8, g: (3 * k) / 10, d: 0.28, c: "240,236,226", a: 0.42 },
     });
+    // cypresses flanking the temple and gate sites
+    for (const cx of [z.c0 - 1.5 * k, z.c1 + 1.5 * k, z.g0 - 2 * k])
+      claim(cx - 1.2 * k, base - 9 * k, cx + 1.2 * k, base, base, () => cypress(m, cx, base, 9 * k, CYP));
+    // a continuous row of houses along the quay, leaving the temple, gate and civic sites clear
     for (let x = -8 * k; x < W + 8 * k; ) {
       const wm = 5.5 + r() * 2.6,
-        w = wm * k;
+        w = wm * k,
+        h = gHouseH(r, k),
+        hx0 = x;
       const clear = (x + w > z.c0 && x < z.c1) || (x + w > z.g0 && x < z.g1) || (x + w > sx - 3 * k && x < tx + 11 * k);
-      if (!clear) gHouse(m, r, x, wm, k, base);
+      if (!clear && free(x, base - h - G_ROOF * k, x + w, base, 0)) {
+        claim(x, base - h - G_ROOF * k, x + w, base, base, () => gHouse(m, r, hx0, wm, k, base, h));
+      }
       x += w;
     }
-    for (const cx of [z.c0 - 1.5 * k, z.c1 + 1.5 * k, z.g0 - 2 * k]) cypress(m, cx, base, 9 * k, CYP);
+    // hillside houses in rows from the crest down, never cutting into a house already placed
+    slopeRows(z, (x, frac) => {
+      const wm = 5 + r() * 3,
+        w = wm * k,
+        xm = x + w / 2,
+        hh = base - hillY(xm, k),
+        gy = base - hh * frac + 2 * k,
+        h = gHouseH(r, k);
+      if (
+        hh * frac > 9 * k &&
+        (Math.abs(xm - z.hx) > castleClear(z, k) || frac < 0.62) &&
+        r() < 0.55 &&
+        free(x, gy - h - G_ROOF * k, x + w, gy + 1.5 * k, 0.8 * k)
+      )
+        claim(x, gy - h - G_ROOF * k, x + w, gy + 1.5 * k, gy, () => gHouse(m, r, x, wm, k, gy, h, 1.5 * k));
+      return w * (0.9 + r() * 0.8);
+    });
+    // olive groves and cypresses fill the gaps that are left
+    for (let i = 0; i < 260; i++) {
+      const x = z.g1 + 4 * k + r() * (z.hx + 2.2 * z.sg - z.g1 - 4 * k),
+        top = hillY(x, k);
+      if (base - top < 5 * k) continue;
+      const y = top + 3 * k + r() * (base - top - 3 * k) * 0.9;
+      if (Math.abs(x - z.hx) < plat(k) + 2 * k && y < top + 10 * k) continue;
+      if (r() < 0.14) {
+        const hc = (5 + r() * 4) * k,
+          gy = y + 2 * k,
+          hw = Math.max(1, hc * 0.12);
+        if (free(x - hw, gy - hc, x + hw, gy, 0.5 * k)) claim(x - hw, gy - hc, x + hw, gy, gy, () => cypress(m, x, gy, hc, CYP));
+      } else {
+        const rr = oliveR(r, k),
+          ext = rr * 1.35;
+        if (free(x - ext, y - ext, x + ext, y + rr * 1.1, 0.5 * k))
+          claim(x - ext, y - ext, x + ext, y + rr * 1.1, y + rr * 1.1, () => olive(m, r, x, y, k, rr));
+      }
+    }
+    items.sort((p, q) => p.gy - q.gy);
+    for (const it of items) it.draw();
     // stone quay and two moored boats
     const F = layer(base - S * 0.3, S * 0.3 + G + 2),
       f = F.c,

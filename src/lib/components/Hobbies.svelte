@@ -1,6 +1,7 @@
 <script lang="ts">
     import { pursuits, type Pursuit } from "#lib/content.ts";
     import { parseLinks } from "#lib/richtext.ts";
+    import { openLightbox } from "#lib/lightbox.svelte.ts";
 
     // Greek alphabetic numerals with the keraia, as on inscriptions: Α΄ = 1, Β΄ = 2 ...
     const NUM = [
@@ -103,17 +104,25 @@
                             <article class="stele">
                                 <figure class="relief" class:empty={!ps.length}>
                                     {#if ps.length}
-                                        {#each ps as pic, j (pic.src)}
-                                            <img
-                                                src={pic.src}
-                                                alt={pic.alt}
-                                                loading="lazy"
-                                                class:on={(shown[key] ?? 0) ===
-                                                    j}
-                                                aria-hidden={(shown[key] ??
-                                                    0) !== j}
-                                            />
-                                        {/each}
+                                        {@const cur = ps[shown[key] ?? 0]}
+                                        <button
+                                            type="button"
+                                            class="zoom"
+                                            aria-label={`Enlarge picture: ${cur.alt}`}
+                                            onclick={() => openLightbox(cur.src, cur.alt)}
+                                        >
+                                            {#each ps as pic, j (pic.src)}
+                                                <img
+                                                    src={pic.src}
+                                                    alt={pic.alt}
+                                                    loading="lazy"
+                                                    class:on={(shown[key] ?? 0) ===
+                                                        j}
+                                                    aria-hidden={(shown[key] ??
+                                                        0) !== j}
+                                                />
+                                            {/each}
+                                        </button>
                                         {#if ps.length > 1}
                                             <div class="dots">
                                                 {#each ps as pic, j (pic.src)}
@@ -390,7 +399,20 @@
     .relief img.on {
         opacity: 1;
     }
+    .zoom {
+        position: absolute;
+        inset: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: zoom-in;
+    }
+    .zoom:focus-visible {
+        outline: 2px solid var(--terracotta);
+        outline-offset: -4px;
+    }
     .dots {
+        z-index: 1;
         position: absolute;
         left: 50%;
         bottom: 8px;

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { projects } from "#lib/content.ts";
+    import { openLightbox } from "#lib/lightbox.svelte.ts";
 
     const numerals = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"];
     const shown = projects.filter((p) => !p.hidden);
@@ -15,8 +16,11 @@
                 <article class="charter">
                     <p class="folio">Folio {numerals[i]}</p>
                     {#if p.image}
+                        {@const alt = p.imageAlt || p.name}
                         <figure class="miniature">
-                            <img src={p.image} alt={p.imageAlt || p.name} loading="lazy" />
+                            <button type="button" class="zoom" aria-label={`Enlarge picture: ${alt}`} onclick={() => openLightbox(p.image ?? "", alt)}>
+                                <img src={p.image} {alt} loading="lazy" />
+                            </button>
                         </figure>
                     {/if}
                     <h3>{p.name}</h3>
@@ -95,12 +99,29 @@
             inset 0 0 0 1px var(--rubric),
             0 0 0 1px var(--iron-gall);
     }
+    /* The whole picture is shown (screenshots and charts keep their text); click to enlarge */
+    .zoom {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 1px solid var(--iron-gall);
+        background: #efe2c2;
+        cursor: zoom-in;
+    }
+    .zoom:focus-visible {
+        outline: 2px solid var(--rubric);
+        outline-offset: 3px;
+    }
     .miniature img {
         display: block;
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        border: 1px solid var(--iron-gall);
+        object-fit: contain;
+        transition: transform 0.25s;
+    }
+    .zoom:hover img {
+        transform: scale(1.02);
     }
     .charter h3 {
         font-family: var(--f-goth);

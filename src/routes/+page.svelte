@@ -7,6 +7,7 @@
     import Hobbies from "#lib/components/Hobbies.svelte";
     import Contact from "#lib/components/Contact.svelte";
     import SceneryToggle from "#lib/components/SceneryToggle.svelte";
+    import Lightbox from "#lib/components/Lightbox.svelte";
 
     const year = new Date().getFullYear();
 </script>
@@ -14,6 +15,7 @@
 <CityCanvas />
 <Hud />
 <SceneryToggle />
+<Lightbox />
 
 <main>
     <Intro />

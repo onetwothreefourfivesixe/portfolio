@@ -1,13 +1,12 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-netlify';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [
 		sveltekit({
-			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+			// Netlify adapter set explicitly, so `npm run build` writes build/ (and the server function)
+			// both on Netlify and locally for `netlify deploy` when GitHub-triggered builds aren't available.
 			adapter: adapter()
 		})
 	]

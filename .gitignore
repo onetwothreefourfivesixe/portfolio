@@ -22,3 +22,5 @@ vite.config.ts.timestamp-*
 
 # Design
 design
+# Local Netlify folder
+.netlify

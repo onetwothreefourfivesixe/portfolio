@@ -20,7 +20,7 @@
       "title": "Data Discovery Research Intern",
       "org": "TokenWorks LLC · Remote",
       "points": [
-        "Developing and testing approaches to segmenting cuneiform signs on photographed tablets, the current bottleneck in TokenWorks' cuneiform OCR pipeline.",
+        "Developing and testing approaches to computer vision segmenting cuneiform signs on photographed tablets, the current bottleneck in TokenWorks' cuneiform OCR pipeline.",
         "Using a U-Net with a ResNet-34 backbone to pick out high-level features on tablet images and detect lines of cuneiform."
       ]
     },
@@ -91,19 +91,23 @@
           "label": "Watch the demo",
           "href": "https://youtu.be/gPryaq86BUY"
         }
-      ]
+      ],
+      "image": "/project_images/web/luminate.jpg",
+      "imageAlt": "Luminate's browser extension beside a post on X, rating the post as needing context and listing each claim it checked"
     },
     {
       "name": "Cal Hacks 13.0 Hardware Checkout",
       "station": "Cal Hacks Checkout",
       "built": "Python · Pandas & Matplotlib",
-      "desc": "This projecy involved analysis of request and inventory data from the hardware lending desk at Cal Hacks 13.0, done to improve staffing, stocking, and the hacker experience at future Hackathons @ Berkeley events. Demand peaked in the first hour, four categories were oversubscribed with boards requested at nearly three times available stock, and bulk components sat heavily overstocked, so the recommendation was to shift budget toward boards, kits, peripherals, and sensors.",
+      "desc": "This project involved analysis of request and inventory data from the hardware lending desk at Cal Hacks 13.0, done to improve staffing, stocking, and the hacker experience at future Hackathons @ Berkeley events. Demand peaked in the first hour, four categories were oversubscribed with boards requested at nearly three times available stock, and bulk components sat heavily overstocked, so the recommendation was to shift budget toward boards, kits, peripherals, and sensors.",
       "links": [
         {
           "label": "Source",
           "href": "https://github.com/onetwothreefourfivesixe/CalHacks13.0-Hardware-Checkout-Analysis"
         }
-      ]
+      ],
+      "image": "/project_images/web/calhacks-checkout.jpg",
+      "imageAlt": "Bar chart of Cal Hacks 13.0 hardware requests per hour by outcome, showing most first-day requests were cancelled"
     },
     {
       "name": "QBVReader",
@@ -119,7 +123,9 @@
           "label": "Source",
           "href": "https://github.com/onetwothreefourfivesixe/QBVReader-Web"
         }
-      ]
+      ],
+      "image": "/project_images/web/qbvreader.jpg",
+      "imageAlt": "QBVReader practice screen with a tossup question, its answer line, recent results, and difficulty and subject filters"
     },
     {
       "name": "Human Decision-Making Through Chess",
@@ -130,7 +136,9 @@
           "label": "Source",
           "href": "https://github.com/onetwothreefourfivesixe/InspiritChessAI"
         }
-      ]
+      ],
+      "image": "/project_images/web/chess.jpg",
+      "imageAlt": "Training and test loss and mean absolute error curves for the CNN, with the regression network's metrics below"
     },
     {
       "name": "Pathway Paver",
@@ -154,21 +162,12 @@
     "intro": "",
     "hobbies": [
       {
-        "name": "Quizbowl",
-        "role": "History & quizbowl",
-        "years": "",
-        "desc": "I have been playing [Quizbowl](https://en.wikipedia.org/wiki/Quiz_bowl) since the start of middle school, specializing in history, geography, and mythology. I most recently competed in [ACF Fall 2026](https://hsquizbowl.org/db/tournaments/10688/stats/all_games/), where my team won 1st place.",
-        "image": "/hobby_images/web/quizbowl_acf.jpg",
-        "imageAlt": "Quizbowl team holding book prizes in front of a chalkboard",
-        "links": []
-      },
-      {
         "name": "Transcribing music",
         "role": "Music",
         "years": "",
         "desc": "I transcribe music in my spare time. You can find some of my work [here](https://onlinesequencer.net/members/179356) at Online Sequencer.",
         "image": "/hobby_images/web/transcription.jpg",
-        "imageAlt": "An Online Sequencer transcription of “Scylla” from Epic: The Musical",
+        "imageAlt": "A MIDI transcription of “Scylla” from Epic: The Musical",
         "links": []
       },
       {
@@ -194,10 +193,10 @@
       {
         "name": "Hackathons @ Berkeley",
         "role": "Club · Cubstart Director",
-        "years": "",
-        "desc": "I'm a Director at Hackathons @ Berkeley on the Cubstart, where I teach web development to a class of 50+ UC Berkeley students. In addition, I have worked on the course website and grading software for webpage homework submission.",
+        "years": "2026 - Current",
+        "desc": "I'm a Director at Hackathons @ Berkeley on its Cubstart team, where I teach web development to a class of 50+ UC Berkeley students of all years. In addition, I have worked on the course website and grading software for webpage homework submission.",
         "image": "/hobby_images/web/cubstart.jpg",
-        "imageAlt": "Cubstart staff posing with a giant teddy bear on stage",
+        "imageAlt": "Cubstart staff posing with a giant teddy bear on stage following Cal Hacks 13.0",
         "links": []
       },
       {
@@ -206,12 +205,12 @@
         "years": "2021 – 2026",
         "desc": "I captained and led programming for my FIRST Tech Challenge team, [PigeonBots](https://pigeon-bots.netlify.app/), taking our 12-member team to the World Championships. I was also Student Chair of the [Academy of Excellence Robotics Club](https://aoerobotics.com/), which has 120+ members across 11+ VEX and FTC teams, where I ran leadership meetings and designed a new coding and CAD curriculum for beginners.",
         "image": "/hobby_images/web/team_photo.jpg",
-        "imageAlt": "PigeonBots team in purple shirts behind a large FIRST sign",
+        "imageAlt": "PigeonBots team posing behind a large FIRST sign at the 2025 Kentucky “Run for Robots” Premier Event",
         "links": [],
         "images": [
           {
             "src": "/hobby_images/web/team_photo.jpg",
-            "alt": "PigeonBots team in purple shirts behind a large FIRST sign"
+            "alt": "PigeonBots team posing behind a large FIRST sign at the 2025 Kentucky “Run for Robots” Premier Event"
           },
           {
             "src": "/hobby_images/web/working_on_robot.jpg",
@@ -220,9 +219,18 @@
         ]
       },
       {
+        "name": "Quizbowl",
+        "role": "History & quizbowl",
+        "years": "",
+        "desc": "I have been playing [Quizbowl](https://en.wikipedia.org/wiki/Quiz_bowl) since the start of middle school, specializing in history, geography, and mythology. I most recently competed in [ACF Fall 2026](https://hsquizbowl.org/db/tournaments/10688/stats/all_games/), where my team won 1st place.",
+        "image": "/hobby_images/web/quizbowl_acf.jpg",
+        "imageAlt": "Top scorers at ACF Fall 2026 at UC Berkeley posing with book prizes",
+        "links": []
+      },
+      {
         "name": "Ace Coaches, YMCA Chinatown",
         "role": "Volunteering · San Francisco",
-        "years": "",
+        "years": "2026 - Current",
         "desc": "I volunteer at the YMCA in San Francisco Chinatown as part of the Ace Coaches UC Berkeley club, teaching mainly math and English.",
         "image": "",
         "imageAlt": "",
