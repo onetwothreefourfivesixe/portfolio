@@ -1,5 +1,13 @@
 <script lang="ts">
-    import { bio, lines, links } from "#lib/content.ts";
+    import { bio, links } from "#lib/content.ts";
+
+    // One shortcut per section, labelled with the era its skyline rewinds to
+    const shortcuts = [
+        { href: "#experience", label: "Experience", era: "AD 1888" },
+        { href: "#projects", label: "Projects", era: "AD 1347" },
+        { href: "#hobbies", label: "Hobbies", era: "432 BC" },
+        { href: "#contact", label: "Contact", era: "AD 2150" },
+    ];
 </script>
 
 <section id="intro" data-era="modern">
@@ -23,25 +31,20 @@
                 href={links.resume}
                 target="_blank"
                 rel="noopener noreferrer">resume</a
-            >. Scroll down to learn more about my experiences, projects, and
-            where you can contact me!
+            >.
         </p>
-        <h2>Lines I ride</h2>
-        <ul class="lines">
-            {#each lines as l (l.line)}
-                <li>
-                    <span
-                        class="bullet"
-                        class:dark={l.dark}
-                        style="--c: {l.color}">{l.line}</span
-                    >{l.label}
-                </li>
+        <p class="lede">
+            This site is one town seen across time. As you scroll, the skyline
+            behind each section rewinds to a new era: my experience sits in a
+            Victorian factory town (1888), my projects in a medieval old town
+            (1347), and my hobbies in classical Athens (432 BC). To get in
+            touch, jump ahead to the city of AD 2150.
+        </p>
+        <nav class="cues" aria-label="Jump to a section">
+            {#each shortcuts as c (c.href)}
+                <a class="cue" href={c.href}>{c.label} · {c.era} ↓</a>
             {/each}
-        </ul>
-        <div class="cues">
-            <a class="cue" href="#experience">Experience · ride back to AD 1888 ↓</a>
-            <a class="cue" href="#contact">Contact me · skip to AD 2150 ↓</a>
-        </div>
+        </nav>
     </div>
 </section>
 
@@ -101,49 +104,16 @@
         color: var(--signal);
         font-weight: 600;
     }
-    h2 {
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        margin-top: 34px;
-        margin-bottom: 14px;
-        font-weight: 600;
-    }
-    .lines {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 12px 20px;
-    }
-    .lines li {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.98rem;
-    }
-    .bullet {
-        flex: none;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: var(--c);
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-        font-size: 0.88rem;
-    }
-    .bullet.dark {
-        color: #111;
-    }
+    /* Same pill and 34px gap as every other section's next-section button */
     .cues {
         display: flex;
         flex-wrap: wrap;
-        gap: 0 14px;
+        justify-content: center;
+        gap: 12px 14px;
+        margin-top: 34px;
     }
     .cue {
+        margin: 0;
         color: var(--signal);
         font-weight: 600;
     }

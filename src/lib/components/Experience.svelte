@@ -13,10 +13,10 @@
             Holistic Acupuncture.
         </p>
         <div class="jobs">
-            {#each jobs as job (job.shift)}
+            {#each jobs as job, i (i)}
                 <article class="job">
                     <div class="job-years">
-                        {job.years}<small>{job.shift}</small>
+                        {job.years}<small>{job.shift ?? `Shift ${String(jobs.length - i).padStart(2, "0")}`}</small>
                     </div>
                     <div>
                         <h3>{job.title}</h3>

@@ -1,7 +1,7 @@
 /* City Through Time: global styles
    Era tokens sit at the top of :root; the nav bar reads body[data-era], which Hud.svelte sets from the renderer.
    Panel styles live in their components: Intro (2026 glass), Experience (1888 steel plate),
-   Projects (1347 folio), Contact (2150 console). */
+   Projects (1347 folio), Hobbies (432 BC marble temple), Contact (2150 console). */
 :root {
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -35,6 +35,14 @@ img {
   --iron-gall: #2e2017;
   --rubric: #a3271b;
   --gilt: #9a7424;
+  /* The Agora, 432 BC */
+  --marble: #f3ede2;
+  --marble-deep: #e4d9c4;
+  --vein: #cdbfa6;
+  --temple-ink: #2b2420;
+  --terracotta: #a8552f;
+  --aegean: #2f5d8f;
+  --bronze: #8a6a2e;
   /* Skyport, 2150 */
   --void: #060820;
   --cyan: #3ef2ff;
@@ -47,6 +55,7 @@ img {
   --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --f-goth: "Grenze Gotisch", "UnifrakturMaguntia", Georgia, serif;
   --f-book: "EB Garamond", Garamond, "Times New Roman", serif;
+  --f-classic: "Cinzel", "Trajan Pro", Georgia, serif;
   --f-fut: "Michroma", "Eurostile", "Arial Black", sans-serif;
   --f-fut-body: "Chakra Petch", "Segoe UI", sans-serif;
 
@@ -121,6 +130,13 @@ body[data-era="medieval"] {
   --hud-r: 0px;
   --hud-font: var(--f-book);
 }
+body[data-era="classical"] {
+  --hud-bg: #f3ede2;
+  --hud-fg: #2b2420;
+  --hud-line: #a8552f;
+  --hud-r: 0px;
+  --hud-font: var(--f-classic);
+}
 body[data-era="future"] {
   --hud-bg: rgba(6, 8, 32, 0.8);
   --hud-fg: #d9f8ff;
@@ -145,12 +161,29 @@ section#intro {
 .panel {
   width: 100%;
   min-width: 0;
+  transition:
+    opacity 0.4s,
+    visibility 0s;
 }
+/* The bottom-right toggle hides the panels to show the town. They keep their size, so scrolling still changes era. */
+body.scenery-only main .panel,
+body.scenery-only footer {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s,
+    visibility 0s linear 0.4s;
+}
+/* Next-section button: a pill centred 34px below its section's content */
 .cue {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
-  margin-top: 34px;
+  margin: 34px auto 0;
   padding: 12px 22px;
   border: 2px solid currentColor;
   border-radius: 999px;

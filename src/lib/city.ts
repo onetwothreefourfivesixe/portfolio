@@ -1,10 +1,11 @@
 /*
  * City Through Time: skyline renderer
- * One riverside town drawn on a full-screen canvas (#city) and blended between four eras by scroll position.
+ * One riverside town drawn on a full-screen canvas (#city) and blended between five eras by scroll position.
  *
  * Map of this file
  *   ERA, HP ............ per-era sky, ground, water, camera zoom; heritage palette per era
- *   heritage() ......... castle hill, cathedral, gate tower: drawn live every frame with the blended palette
+ *   heritage() ......... castle hill, cathedral, gate tower: drawn live every frame with the blended palette;
+ *                        in 432 BC they become the Acropolis, a Doric temple and a propylon
  *   bridgeGeo/drawBridge  bridge from the gate to the near bank, one BRIDGE style per era
  *   build<Era>() ....... static layers built once per era (bg, mid, fg offscreen canvases)
  *   dyn<Era>/dynW<Era>.. per-frame animation above the skyline / on the water
@@ -46,7 +47,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
   };
   const pick = (r, a) => a[(r() * a.length) | 0];
 
-  /* One town, four eras. zoom = metres that fit in the skyline height S, so the camera pulls back as the town grows. */
+  /* One town, five eras. zoom = metres that fit in the skyline height S, so the camera pulls back as the town grows. */
   const ERA = {
     modern: {
       year: 2026,
@@ -78,6 +79,16 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       refl: 0.32,
       zoom: 90,
     },
+    classical: {
+      year: -431,
+      pop: "250,000",
+      name: "The Agora · Classical Athens",
+      sky: ["#a3b4b8", "#e2dab9"],
+      ground: "#36707c",
+      water: "#779a98",
+      refl: 0.36,
+      zoom: 80,
+    },
     future: {
       year: 2150,
       pop: "31 million",
@@ -106,6 +117,16 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       clock: "#d2c3a3",
       hill: "#8ea27a",
       hill2: "#7d936b",
+    },
+    classical: {
+      stone: "#efe4cc",
+      shade: "#c9b28a",
+      roof: "#b5643c",
+      slate: "#3d6d9c",
+      win: "#5c4836",
+      clock: "#d6a53a",
+      hill: "#ad9a70",
+      hill2: "#9a8862", // shaded flank: same tan as the hill, one step darker
     },
     industrial: {
       stone: "#8c7c68",
@@ -438,6 +459,77 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     );
     L(ctx, p.slate, Math.max(1, 0.25 * k), gx, base - h - 17 * k, gx, base - h - 20 * k);
   }
+  /* 432 BC: the castle hill is the Acropolis, the cathedral site a Doric temple, the gate tower a propylon.
+     CW is the classical era's weight; heritage() crossfades the two sets of landmarks by it. */
+  let CW = 0;
+  function temple(cx, gy, w, k, p, n, colH) {
+    const st = Math.max(1, 0.5 * k),
+      cw = Math.max(1.5, w / (n * 2)),
+      gap = (w - cw) / (n - 1),
+      x0 = cx - w / 2,
+      u = (f) => Math.max(1, f * k);
+    for (let i = 0; i < 3; i++) {
+      const o = (2 - i) * 0.6 * k;
+      hr(x0 - o, gy - (i + 1) * st, w + 2 * o, st + (i ? 0 : 2 * k), i % 2 ? p.shade : p.stone);
+    }
+    const ct = gy - 3 * st - colH;
+    hr(x0 + cw * 0.5, ct, w - cw, colH, p.win);
+    for (let j = 0; j < n; j++) {
+      const x = x0 + j * gap;
+      hr(x, ct, cw, colH, p.stone);
+      ctx.fillStyle = p.shade;
+      ctx.fillRect(x + cw * 0.6, ct, cw * 0.4, colH);
+      ctx.fillRect(x - cw * 0.18, ct - u(0.45), cw * 1.36, u(0.45));
+    }
+    const ov = 0.4 * k,
+      ey = ct - u(0.45),
+      ah = u(0.8),
+      fh = u(0.9);
+    hr(x0 - ov, ey - ah, w + 2 * ov, ah, p.stone);
+    hr(x0 - ov, ey - ah - fh, w + 2 * ov, fh, p.stone);
+    ctx.fillStyle = p.slate;
+    const tg = Math.max(1, cw * 0.5);
+    for (let j = 0; j < n * 2 - 1; j++) ctx.fillRect(x0 + (j * gap) / 2 + cw / 2 - tg / 2, ey - ah - fh, tg, fh);
+    const cy = ey - ah - fh;
+    ctx.fillStyle = p.shade;
+    ctx.fillRect(x0 - ov * 1.5, cy - u(0.35), w + 3 * ov, u(0.35));
+    const py = cy - u(0.35),
+      ph = Math.max(3, w * 0.11);
+    hf(p.stone, x0 - ov * 1.5, py, cx, py - ph, x0 + w + ov * 1.5, py);
+    if (ph > 5) {
+      hf(p.slate, x0 + ov * 2, py - 0.25 * k, cx, py - ph + 0.7 * k, x0 + w - ov * 2, py - 0.25 * k);
+      ctx.fillStyle = p.stone;
+      for (let i = 1; i < 10; i++) {
+        const fx = x0 + (w * i) / 10,
+          hh = (ph - 1.2 * k) * (1 - Math.abs(fx - cx) / (w / 2)) * 0.7;
+        if (hh > 1.5) ctx.fillRect(fx - 0.3 * k, py - 0.25 * k - hh, u(0.6), hh);
+      }
+    }
+    for (const ax of [x0 - ov * 1.5, cx, x0 + w + ov * 1.5]) dot(ctx, ax, ax === cx ? py - ph : py, u(0.5), p.clock);
+  }
+  function acropolis(hx, k, p) {
+    const pw = plat(k),
+      gy = hillY(hx, k) + 1.5 * k;
+    // the Cimonian wall: a cut-stone face where the castle platform sat
+    hf(p.shade, hx - pw - 2 * k, gy + 7 * k, hx - pw, gy - 1 * k, hx + pw, gy - 1 * k, hx + pw + 2 * k, gy + 7 * k);
+    ctx.fillStyle = p.hill2;
+    for (let y = gy + 0.8 * k; y < gy + 6.5 * k; y += 1.6 * k)
+      ctx.fillRect(hx - pw - (y - gy) * 0.25, y, 2 * pw + (y - gy) * 0.5, Math.max(1, 0.18 * k));
+    const w = Math.min(40 * k, pw * 1.35),
+      px = hx - pw * 0.3,
+      ex = hx + pw * 0.74,
+      ew = Math.min(11 * k, pw * 0.36);
+    temple(px, gy, w, k, p, 8, 8.5 * k); // Parthenon
+    temple(ex, gy, ew, k, p, 4, 5 * k); // Erechtheion
+    // Athena Promachos: gilt bronze, spear raised
+    const ax = hx + pw * 0.47;
+    hr(ax - 0.7 * k, gy - 3 * k, 1.4 * k, 3 * k, p.stone);
+    ctx.fillStyle = p.clock;
+    ctx.fillRect(ax - 0.35 * k, gy - 7 * k, Math.max(1, 0.7 * k), 4 * k);
+    dot(ctx, ax, gy - 7.4 * k, Math.max(1, 0.45 * k), p.clock);
+    dot(ctx, ax - 0.6 * k, gy - 5 * k, Math.max(1, 0.75 * k), p.clock);
+    L(ctx, p.clock, Math.max(1, 0.2 * k), ax + 0.5 * k, gy - 3.6 * k, ax + 0.5 * k, gy - 10.5 * k);
+  }
   function heritage(k, p, glow) {
     const hx = W * HX,
       sg = hillSg(k);
@@ -472,9 +564,20 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       ctx.lineTo(x, Math.min(base, hillY(x, k) + (x - hx) * 0.12 + 2 * k));
     ctx.lineTo(hx + sg * 2.8, base + 1);
     ctx.fill();
-    castle(hx, hillY(hx, k) + 1.5 * k, k, p, sg);
-    cathedral(W * CX, k, p);
-    gateTower(W * GX, k, p);
+    const a0 = ctx.globalAlpha;
+    if (CW < 0.998) {
+      ctx.globalAlpha = a0 * (1 - CW);
+      castle(hx, hillY(hx, k) + 1.5 * k, k, p, sg);
+      cathedral(W * CX, k, p);
+      gateTower(W * GX, k, p);
+    }
+    if (CW > 0.002) {
+      ctx.globalAlpha = a0 * CW;
+      acropolis(hx, k, p);
+      temple(W * CX, base, Math.min(62 * k, W * 0.24) * 0.62, k, p, 6, 6.5 * k);
+      temple(W * GX, base, 11 * k, k, p, 4, 6 * k);
+    }
+    ctx.globalAlpha = a0;
   }
 
   /* =====================================================================
@@ -513,6 +616,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
   }
   const NEAR = {
     medieval: ["#a8987a", "#c9b998"],
+    classical: ["#bfa47a", "#e4d5b2"],
     industrial: ["#b3a080", "#d1c1a2"],
     modern: ["#0a0d20", "#3a4470"],
     future: ["#0b0f33", "#3ef2ff"],
@@ -598,6 +702,14 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       par: "#d6c7a8",
       arches: 5,
       ah: 0.62,
+    },
+    classical: {
+      side: "#dccdaa",
+      deck: "#c4b28c",
+      arch: "rgba(20,44,52,.26)",
+      par: "#f1e6cc",
+      arches: 3,
+      ah: 0.6,
     },
     industrial: {
       side: "#7f725f",
@@ -2125,14 +2237,244 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     }
   }
 
+  /* =====================================================================
+   432 BC · THE AGORA — limewashed houses, stoa and tholos below the Acropolis
+   ===================================================================== */
+  const LIME = ["#f1e9d6", "#e9dcc0", "#f5efe1", "#e3d3b1", "#ecd9b6"],
+    TERRA = ["#b5643c", "#a85a34", "#c27248"],
+    OLIVE = ["#8d9466", "#7b8458", "#9aa070", "#6f7a50"],
+    CYP = "#3c5634";
+  function gHouse(c, r, x, wm, k, gy) {
+    const w = wm * k,
+      h = (3.2 + r() * 2.6) * k,
+      col = pick(r, LIME);
+    R(c, x, gy - h, w, h + 8 * k, col);
+    R(c, x + w * 0.8, gy - h, w * 0.2, h + 8 * k, "rgba(120,90,60,.16)");
+    if (r() < 0.65) {
+      const rh = Math.min(1.8 * k, w * 0.2);
+      P(c, pick(r, TERRA), x - 0.4 * k, gy - h + 0.2 * k, x + w * 0.5, gy - h - rh, x + w + 0.4 * k, gy - h + 0.2 * k);
+    } else {
+      R(c, x, gy - h - 0.5 * k, w, 0.5 * k, col);
+      R(c, x, gy - h, w, Math.max(1, 0.2 * k), "rgba(120,90,60,.25)");
+      if (r() < 0.5) dot(c, x + w * (0.25 + r() * 0.5), gy - h - 1.2 * k, 0.9 * k, pick(r, OLIVE));
+    }
+    R(c, x + w * (r() < 0.5 ? 0.18 : 0.6), gy - 2.3 * k, 1.2 * k, 2.3 * k, "#5a4030");
+    if (h > 4 * k) R(c, x + w * (0.25 + r() * 0.4), gy - h + 1.2 * k, 0.8 * k, 0.8 * k, "#4a3a2c");
+    return w;
+  }
+  function stoa(c, x, w, k, gy) {
+    const ch = 4.2 * k,
+      cw = Math.max(1, 0.7 * k),
+      n = Math.max(4, Math.round(w / (2.2 * k)));
+    R(c, x - 0.6 * k, gy - 0.6 * k, w + 1.2 * k, 8.6 * k, "#d9c9a6");
+    let y = gy - 0.6 * k;
+    for (let s = 0; s < 2; s++) {
+      R(c, x + 0.6 * k, y - ch, w - 1.2 * k, ch, "#6e5a44");
+      for (let j = 0; j < n; j++) {
+        const cx = x + 0.6 * k + (j * (w - 1.2 * k - cw)) / (n - 1);
+        R(c, cx, y - ch, cw, ch, "#f3eadb");
+        R(c, cx + cw * 0.6, y - ch, cw * 0.4, ch, "#d8c7a6");
+        R(c, cx - 0.2 * k, y - ch, cw + 0.4 * k, Math.max(1, 0.35 * k), "#f3eadb");
+      }
+      y -= ch;
+      R(c, x, y - 0.8 * k, w, 0.8 * k, "#ebdfc4");
+      R(c, x, y - 0.8 * k, w, Math.max(1, 0.2 * k), "#c9b28a");
+      y -= 0.8 * k;
+    }
+    P(c, "#b5643c", x - 0.6 * k, y, x + 2 * k, y - 1.8 * k, x + w - 2 * k, y - 1.8 * k, x + w + 0.6 * k, y);
+  }
+  function tholos(c, cx, k, gy) {
+    const rw = 7 * k,
+      ch = 4 * k;
+    R(c, cx - rw / 2 - 0.6 * k, gy - 0.6 * k, rw + 1.2 * k, 8.6 * k, "#d9c9a6");
+    R(c, cx - rw / 2 + 0.4 * k, gy - 0.6 * k - ch, rw - 0.8 * k, ch, "#6e5a44");
+    for (let j = 0; j < 6; j++) {
+      const f = j / 5,
+        x = cx + (f - 0.5) * (rw - 0.7 * k) * Math.sin(0.4 + f * 2.34) * 1.2;
+      R(c, x - 0.35 * k, gy - 0.6 * k - ch, 0.7 * k, ch, "#f3eadb");
+    }
+    const ty = gy - 0.6 * k - ch;
+    R(c, cx - rw / 2, ty - 0.8 * k, rw, 0.8 * k, "#ebdfc4");
+    c.fillStyle = "#b5643c";
+    c.beginPath();
+    c.ellipse(cx, ty - 0.8 * k, rw / 2 + 0.3 * k, 2.8 * k, 0, Math.PI, 0);
+    c.fill();
+    dot(c, cx, ty - 3.8 * k, 0.4 * k, "#d6a53a");
+  }
+  function statue(c, x, k, gy) {
+    R(c, x - 0.8 * k, gy - 2.2 * k, 1.6 * k, 2.2 * k, "#e6d8b8");
+    R(c, x - 0.35 * k, gy - 5 * k, 0.7 * k, 2.8 * k, "#d6a53a");
+    dot(c, x, gy - 5.35 * k, 0.4 * k, "#d6a53a");
+  }
+  function cypress(c, x, gy, h, col) {
+    c.fillStyle = col;
+    c.beginPath();
+    c.ellipse(x, gy - h / 2, Math.max(1, h * 0.12), h / 2, 0, 0, 6.2832);
+    c.fill();
+  }
+  function olive(c, r, x, y, k) {
+    const rr = (1.6 + r() * 1.3) * k;
+    R(c, x - 0.25 * k, y, Math.max(1, 0.5 * k), rr * 1.1, "#5a4632");
+    for (let i = 0; i < 3; i++)
+      dot(c, x + (r() - 0.5) * rr, y - r() * rr * 0.5, rr * (0.55 + r() * 0.3), pick(r, OLIVE));
+  }
+  function buildClassical() {
+    const k = S / ERA.classical.zoom,
+      Lr = layer(base - TOP, TOP + 2),
+      c = Lr.c,
+      r = rng(432),
+      src = [],
+      z = zones(k);
+    // Mount Hymettus, then an olive ridge with farmhouses and cypresses
+    const far = (x) => base - S * (0.27 + 0.06 * Math.sin((x / W) * 3 + 0.6) + 0.02 * Math.sin((x / W) * 9));
+    c.fillStyle = "#a9b2bd";
+    c.beginPath();
+    c.moveTo(0, base);
+    for (let x = 0; x <= W + 16; x += 12) c.lineTo(x, far(x));
+    c.lineTo(W, base);
+    c.fill();
+    const ridge = (x) => far(x) + S * 0.1 + Math.sin((x / W) * 6 + 2) * S * 0.02;
+    c.fillStyle = "#a2a27a";
+    c.beginPath();
+    c.moveTo(0, base);
+    for (let x = 0; x <= W + 16; x += 12) c.lineTo(x, ridge(x));
+    c.lineTo(W, base);
+    c.fill();
+    for (let x = 0; x < W; x += 5 + r() * 12) {
+      const y = ridge(x) + S * 0.01 + r() * S * 0.04;
+      if (r() < 0.12) cypress(c, x, y + 1.5 * k, (3 + r() * 3) * k * 0.6, CYP);
+      else if (r() < 0.2) R(c, x, y - 0.8 * k, 1.6 * k, 1 * k, pick(r, LIME));
+      else dot(c, x, y, (1 + r() * 1.2) * k * 0.5, pick(r, OLIVE));
+    }
+    for (let x = -10; x < W; ) x += gHouse(c, r, x, 5 + r() * 3, k * 0.8, base - 4 * k);
+    haze(c, "233,228,210", 0.24);
+    // hillside: olive groves, a few houses, cypresses
+    const Mr = layer(base - TOP, TOP + 2),
+      m = Mr.c;
+    for (let i = 0; i < 90; i++) {
+      const x = z.g1 + 4 * k + r() * (z.hx + 2.2 * z.sg - z.g1 - 4 * k),
+        top = hillY(x, k);
+      if (base - top < 5 * k) continue;
+      const y = top + 3 * k + r() * (base - top - 3 * k) * 0.9;
+      if (Math.abs(x - z.hx) < plat(k) + 2 * k && y < top + 10 * k) continue;
+      if (r() < 0.14) cypress(m, x, y + 2 * k, (5 + r() * 4) * k, CYP);
+      else olive(m, r, x, y, k);
+    }
+    slopeRows(z, (x, frac) => {
+      const wm = 5 + r() * 3,
+        w = wm * k,
+        xm = x + w / 2,
+        hh = base - hillY(xm, k);
+      if (hh * frac > 9 * k && (Math.abs(xm - z.hx) > castleClear(z, k) || frac < 0.62) && r() < 0.42)
+        gHouse(m, r, x, wm, k, base - hh * frac + 2 * k);
+      return w * (0.9 + r() * 0.8);
+    });
+    // the quay: stoa and tholos east of the propylon, houses elsewhere; the temple and gate sites stay clear
+    const sx = z.g1 + 3 * k,
+      sw = Math.min(70 * k, W * 0.22),
+      tx = sx + sw + 6 * k;
+    stoa(m, sx, sw, k, base);
+    tholos(m, tx, k, base);
+    statue(m, sx - 1.6 * k, k, base);
+    statue(m, tx + 5.5 * k, k, base);
+    R(m, tx + 8 * k, base - 1.4 * k, 2 * k, 1.4 * k, "#e6d8b8"); // altar
+    src.push({
+      x: tx + 9 * k,
+      y: base - 1.4 * k,
+      rate: 1.2,
+      o: { r0: (1.2 * k) / 10, vx: 4, vy: -8, g: (3 * k) / 10, d: 0.28, c: "240,236,226", a: 0.42 },
+    });
+    for (let x = -8 * k; x < W + 8 * k; ) {
+      const wm = 5.5 + r() * 2.6,
+        w = wm * k;
+      const clear = (x + w > z.c0 && x < z.c1) || (x + w > z.g0 && x < z.g1) || (x + w > sx - 3 * k && x < tx + 11 * k);
+      if (!clear) gHouse(m, r, x, wm, k, base);
+      x += w;
+    }
+    for (const cx of [z.c0 - 1.5 * k, z.c1 + 1.5 * k, z.g0 - 2 * k]) cypress(m, cx, base, 9 * k, CYP);
+    // stone quay and two moored boats
+    const F = layer(base - S * 0.3, S * 0.3 + G + 2),
+      f = F.c,
+      q = QH * k;
+    R(f, 0, base, W, q, "#cdb991");
+    R(f, 0, base, W, Math.max(1, 0.5 * k), "#e6d8b6");
+    for (let y = base + 1.4 * k; y < base + q; y += 1.4 * k)
+      for (let x = (((y / (1.4 * k)) | 0) % 2) * 2 * k; x < W; x += 4 * k) R(f, x, y, 1, 1.4 * k, "rgba(90,70,50,.25)");
+    R(f, 0, base + q - 1, W, 2, "rgba(20,44,52,.35)");
+    for (const bx of [W * 0.1, W * 0.68]) {
+      const bl = 13 * k,
+        y = wy(k, 0.14);
+      P(f, "#3b2a1e", bx, y, bx + bl, y, bx + bl + 1 * k, y - 1.6 * k, bx + bl * 0.9, y + 2 * k, bx + bl * 0.12, y + 2 * k);
+      R(f, bx + 0.6 * k, y, bl * 0.9, Math.max(1, 0.4 * k), "#a3271b");
+      dot(f, bx + 1.4 * k, y + 0.9 * k, Math.max(1, 0.35 * k), "#f4efe4");
+      L(f, "#3b2a1e", Math.max(1, 0.3 * k), bx + bl * 0.5, y, bx + bl * 0.5, y - 9 * k);
+    }
+    return { bg: Lr, mid: Mr, fg: F, src, k, smoke: [] };
+  }
+  function dynClassical(d, T) {
+    drawParts(d.smoke);
+    ctx.strokeStyle = "rgba(255,255,255,.92)";
+    ctx.lineWidth = 1.6;
+    for (let i = 0; i < 5; i++) {
+      const bx = W + 40 - ((T * (14 + i * 3) + i * 230) % (W + 80)),
+        by = base - S * (0.9 + i * 0.07) + Math.sin(T * 0.7 + i) * 8,
+        fl = Math.sin(T * 4 + i) * 3;
+      ctx.beginPath();
+      ctx.moveTo(bx - 7, by - fl);
+      ctx.quadraticCurveTo(bx - 2, by - 4, bx, by);
+      ctx.quadraticCurveTo(bx + 2, by - 4, bx + 7, by - fl);
+      ctx.stroke();
+    }
+  }
+  // A trireme rowing west across the harbour
+  function dynWClassical(d, T) {
+    const y = wy(d.k, 0.58),
+      k = d.k * persp(y, d.k) * 0.8,
+      bl = 30 * k,
+      span = W + bl * 3,
+      x = W + bl * 1.5 - ((T * 8) % span);
+    ctx.strokeStyle = "rgba(240,246,248,.45)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x + bl, y + 1.6 * k);
+    ctx.lineTo(x + bl * 1.9, y + 2.6 * k);
+    ctx.stroke();
+    for (let i = 0; i < 12; i++) {
+      const ox = x + bl * (0.16 + i * 0.062),
+        a = Math.sin(T * 3.2 - i * 0.12) * 1.1 * k;
+      L(ctx, "#5a4632", Math.max(1, 0.2 * k), ox, y + 0.6 * k, ox + a + 1.4 * k, y + 2.9 * k);
+    }
+    P(ctx, "#2b211b", x, y + 0.6 * k, x + 2 * k, y - 0.6 * k, x + bl * 0.92, y - 0.6 * k, x + bl + 0.6 * k, y - 3.2 * k, x + bl * 0.97, y + 0.4 * k, x + bl * 0.9, y + 1.4 * k, x + 2.5 * k, y + 1.4 * k);
+    R(ctx, x + 2 * k, y - 0.6 * k, bl * 0.9 - 2 * k, Math.max(1, 0.45 * k), "#a3271b");
+    dot(ctx, x + 2.6 * k, y - 0.05 * k, Math.max(1, 0.35 * k), "#f4efe4");
+    P(ctx, "#b08a3e", x - 1.3 * k, y + 1 * k, x + 0.4 * k, y + 0.5 * k, x + 0.4 * k, y + 1.4 * k);
+    L(ctx, "#3a2a1c", Math.max(1, 0.3 * k), x + bl * 0.5, y - 0.6 * k, x + bl * 0.5, y - 12 * k);
+    const sw = Math.sin(T * 1.1) * 0.5 * k;
+    P(ctx, "#efe6d2", x + bl * 0.37, y - 11.5 * k, x + bl * 0.63, y - 11.5 * k, x + bl * 0.62 + sw, y - 4.6 * k, x + bl * 0.38 + sw, y - 4.6 * k);
+    R(ctx, x + bl * 0.37, y - 11.5 * k, bl * 0.26, Math.max(1, 0.6 * k), "#a3271b");
+  }
+
   const BUILD = {
     modern: buildModern,
     industrial: buildIndustrial,
     medieval: buildMedieval,
+    classical: buildClassical,
     future: buildFuture,
   };
-  const DYN = { modern: dynModern, industrial: dynIndustrial, medieval: dynMedieval, future: dynFuture };
-  const DYNW = { modern: dynWModern, industrial: dynWIndustrial, medieval: dynWMedieval, future: dynWFuture };
+  const DYN = {
+    modern: dynModern,
+    industrial: dynIndustrial,
+    medieval: dynMedieval,
+    classical: dynClassical,
+    future: dynFuture,
+  };
+  const DYNW = {
+    modern: dynWModern,
+    industrial: dynWIndustrial,
+    medieval: dynWMedieval,
+    classical: dynWClassical,
+    future: dynWFuture,
+  };
 
   /* ---------- sky ---------- */
   function cloudSprite(r, w, h, rgb, a, shade) {
@@ -2185,6 +2527,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       modern: mk(5, 160, 320, 0.06, 0.32, "214,140,160", 0.42, null, 3, true),
       industrial: mk(8, 260, 520, 0.02, 0.4, "96,82,70", 0.5, null, 6, true),
       medieval: mk(6, 180, 340, 0.04, 0.26, "255,255,255", 0.95, "170,185,205", 5, false),
+      classical: mk(3, 200, 380, 0.05, 0.22, "255,255,255", 0.95, "190,205,222", 3, false),
       future: [],
     };
     hatchCv = document.createElement("canvas");
@@ -2212,6 +2555,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     const wm = wOf(w, "modern"),
       wi = wOf(w, "industrial"),
       wd = wOf(w, "medieval"),
+      wc = wOf(w, "classical"),
       wf = wOf(w, "future");
     const glow = (x, y, rr, col, a) => {
       if (a < 0.003) return;
@@ -2226,6 +2570,8 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     if (wi) dot(ctx, W * 0.62, base - S * 0.95, 30, `rgba(252,232,190,${(0.6 * wi).toFixed(3)})`);
     glow(W * 0.12, H * 0.12, 140, "255,248,220", 0.7 * wd);
     if (wd) dot(ctx, W * 0.12, H * 0.12, 26, `rgba(255,252,236,${wd.toFixed(3)})`);
+    glow(W * 0.86, H * 0.1, 170, "255,250,226", 0.85 * wc);
+    if (wc) dot(ctx, W * 0.86, H * 0.1, 24, `rgba(255,253,240,${wc.toFixed(3)})`);
     if (wf) {
       for (const s of stars) {
         ctx.fillStyle = `rgba(220,240,255,${(wf * (0.4 + 0.5 * ((s.p * 7) % 1))).toFixed(3)})`;
@@ -2355,6 +2701,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       p: pal(w),
       wm: wOf(w, "modern"),
       wf: wOf(w, "future"),
+      wc: wOf(w, "classical"),
       OFF: (e) => (1 - e) * S * 1.15,
       key: w.map((v) => v.toFixed(4)).join() + "|" + W + "x" + H,
     };
@@ -2380,6 +2727,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
   function passFront(F) {
     const { order, kz, p, w } = F;
     HE = F.wf * 0.8;
+    CW = F.wc;
     heritage(kz, p, F.wm);
     for (const [k, e] of order) {
       ctx.globalAlpha = A(e);

@@ -17,7 +17,8 @@
         <div class="readout" aria-live="off">
             <span class="era-name">{hud.name}</span>
             <span class="pop">pop. {hud.pop}</span>
-            <span>AD <b>{hud.year}</b></span>
+            <!-- Years before 1 are astronomical: 0 is 1 BC, -431 is 432 BC. -->
+            <span>{#if hud.year > 0}AD <b>{hud.year}</b>{:else}<b>{1 - hud.year}</b> BC{/if}</span>
         </div>
     </div>
 </header>
@@ -102,10 +103,48 @@
             font-size: 0.76rem;
         }
     }
-    @media (max-width: 380px) {
+    /* Phones: five links and the year don't share one line, so the bar becomes two rows:
+       links spread across the top, era name and year beneath. */
+    @media (max-width: 520px) {
+        .hud-inner {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            padding: 4px 6px 5px;
+        }
+        nav {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        nav::-webkit-scrollbar {
+            display: none;
+        }
         nav a {
-            padding: 5px 5px;
+            padding: 6px 5px;
+            font-size: 0.74rem;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+        .readout {
+            justify-content: center;
+            gap: 10px;
             font-size: 0.72rem;
+        }
+        .readout b {
+            font-size: 0.9rem;
+        }
+        .era-name {
+            display: inline;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    @media (max-width: 360px) {
+        nav a {
+            padding: 6px 2px;
+            font-size: 0.68rem;
         }
     }
 </style>

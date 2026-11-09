@@ -1,5 +1,5 @@
 // Shared nav-bar state. city.ts writes it through its onHud callback; Hud.svelte reads it.
-export type EraKey = "modern" | "industrial" | "medieval" | "future";
+export type EraKey = "modern" | "industrial" | "medieval" | "classical" | "future";
 
 export interface HudState {
   year: number;
@@ -26,5 +26,6 @@ export const sections: Section[] = [
   { id: "intro", label: "Intro" },
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
+  { id: "hobbies", label: "Hobbies" },
   { id: "contact", label: "Contact" },
 ];

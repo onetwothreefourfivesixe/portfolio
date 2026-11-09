@@ -4,19 +4,23 @@
     import Intro from "#lib/components/Intro.svelte";
     import Experience from "#lib/components/Experience.svelte";
     import Projects from "#lib/components/Projects.svelte";
+    import Hobbies from "#lib/components/Hobbies.svelte";
     import Contact from "#lib/components/Contact.svelte";
+    import SceneryToggle from "#lib/components/SceneryToggle.svelte";
 
     const year = new Date().getFullYear();
 </script>
 
 <CityCanvas />
 <Hud />
+<SceneryToggle />
 
 <main>
     <Intro />
     <Experience />
     <Projects />
+    <Hobbies />
     <Contact />
 </main>
 
-<footer>© {year} Edward Lin · A town built over 803 years</footer>
+<footer>© {year} Edward Lin · A town built over 2,581 years</footer>

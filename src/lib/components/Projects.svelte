@@ -14,9 +14,14 @@
             {#each shown as p, i (p.name)}
                 <article class="charter">
                     <p class="folio">Folio {numerals[i]}</p>
+                    {#if p.image}
+                        <figure class="miniature">
+                            <img src={p.image} alt={p.imageAlt || p.name} loading="lazy" />
+                        </figure>
+                    {/if}
                     <h3>{p.name}</h3>
                     <p class="desc">{p.desc}</p>
-                    <p class="wrought">{p.wrought}</p>
+                    {#if p.wrought || p.built}<p class="wrought">{p.wrought || p.built}</p>{/if}
                     {#if p.links.length}
                         <p class="links">
                             {#each p.links as l (l.href)}
@@ -27,7 +32,7 @@
                 </article>
             {/each}
         </div>
-        <a class="cue" href="#contact">Contact · leap ahead to AD 2150 ↓</a>
+        <a class="cue" href="#hobbies">Hobbies · further back to 432 BC ↓</a>
     </div>
 </section>
 
@@ -78,6 +83,24 @@
         font-variant: small-caps;
         letter-spacing: 0.12em;
         color: var(--gilt);
+    }
+    /* Optional project picture, framed like an illuminated miniature */
+    .miniature {
+        margin: 8px 0 12px;
+        aspect-ratio: 4 / 3;
+        padding: 5px;
+        background: var(--vellum);
+        border: 2px solid var(--gilt);
+        box-shadow:
+            inset 0 0 0 1px var(--rubric),
+            0 0 0 1px var(--iron-gall);
+    }
+    .miniature img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 1px solid var(--iron-gall);
     }
     .charter h3 {
         font-family: var(--f-goth);
