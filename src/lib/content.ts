@@ -54,7 +54,10 @@ export interface Links {
 
 export const links: Links = data.links;
 export const bio: string = data.bio;
-// Subway-line bullets for the Midtown panel. Colours follow the NYC line palette.
+// Shown under the name in the Midtown panel
+export const tagline: string = data.tagline;
+// Availability badge in the Midtown panel. Set it to "" to hide the badge.
+export const status: string = data.status;
 // Shift log for The Works panel, newest first. Shift numbers count up from the earliest job.
 export const jobs: Job[] = data.jobs;
 // Charters for the Old Town panel. Set hidden: true to keep an entry out of the page.

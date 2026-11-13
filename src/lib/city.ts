@@ -1544,6 +1544,18 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     g.addColorStop(0.45, "#6f7898");
     g.addColorStop(0.55, "#7c85a4");
     g.addColorStop(1, "#2a3150");
+    // The crown's steel bleeds down over the top floors, so the body fades into the crown instead of meeting it at a seam
+    const f0 = base - 150 * k,
+      f1 = base - 200 * k,
+      step = Math.max(1, k * 0.8);
+    c.save();
+    c.fillStyle = g;
+    for (let y = f0; y > f1; y -= step) {
+      const t = (f0 - y) / (f0 - f1);
+      c.globalAlpha = t * t * 0.92;
+      c.fillRect(cx - 28 * k, y - step, 56 * k, step + 0.5);
+    }
+    c.restore();
     for (let i = 0; i < 6; i++) {
       const w = (56 - i * 7.5) * k,
         y = base - (200 + i * 9) * k,
@@ -1866,7 +1878,29 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     ["#ff3ea5", "#ffb03e"],
     ["#45ffb0", "#3e8bff"],
     ["#ff3ea5", "#7b5cff"],
+    ["#ff4b3e", "#ffc247"], // lantern red and gold
   ];
+  // Upturned pagoda eaves (feiyan) capping a block, drawn in neon
+  function feiyan(c, x, w, y, k, col) {
+    const ov = 3 * k,
+      rh = Math.min(7 * k, w * 0.16),
+      tip = 1.8 * k;
+    c.beginPath();
+    c.moveTo(x - ov, y - tip);
+    c.quadraticCurveTo(x + w * 0.1, y + 0.3 * k, x + w * 0.18, y);
+    c.lineTo(x + w * 0.82, y);
+    c.quadraticCurveTo(x + w * 0.9, y + 0.3 * k, x + w + ov, y - tip);
+    c.quadraticCurveTo(x + w * 0.84, y - rh * 0.25, x + w * 0.72, y - rh);
+    c.lineTo(x + w * 0.28, y - rh);
+    c.quadraticCurveTo(x + w * 0.16, y - rh * 0.25, x - ov, y - tip);
+    c.fillStyle = "#0b0a26";
+    c.fill();
+    c.strokeStyle = col;
+    c.lineWidth = Math.max(1, 0.45 * k);
+    c.stroke();
+    dot(c, x + w * 0.28, y - rh, Math.max(1, 0.6 * k), col);
+    dot(c, x + w * 0.72, y - rh, Math.max(1, 0.6 * k), col);
+  }
   function futWin(c, r, x, y, w, h, k, p) {
     const fh = Math.max(2.2, 3.8 * k * 1.4),
       ww = Math.max(1, 1.2 * k * 1.4),
@@ -2141,6 +2175,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       R(m, x, base - h, w, h, "#0b0a26");
       futWin(m, r, x, base - h, w, h, k, 0.4);
       R(m, x, base - h, w, Math.max(1, 1.4 * k), n[0]);
+      if (w > 28 * k && r() < 0.42) feiyan(m, x, w, base - h, k, r() < 0.5 ? "#ffc247" : "#ff4b3e");
       if (r() < 0.4) {
         const g = m.createLinearGradient(x, 0, x + w, 0);
         g.addColorStop(0, n[0]);
@@ -2183,6 +2218,16 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
         o: r() * W,
         c: r() < 0.5 ? "62,242,255" : "255,62,165",
       });
+    // a handful of red sky lanterns drifting over the towers
+    const lanterns = [];
+    for (let i = 0; i < 7; i++)
+      lanterns.push({
+        x: r() * W,
+        y: S * (0.55 + r() * 0.5),
+        s: S * 0.019 * (0.7 + r() * 0.6),
+        v: 3 + r() * 5,
+        ph: r() * 6.28,
+      });
     return {
       bg: Lr,
       mid: Mr,
@@ -2190,6 +2235,7 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
       bl,
       rings,
       lanes,
+      lanterns,
       k,
       boats: [
         { v: 30, o: 0.2, y: 0.45, c: "62,242,255" },
@@ -2199,6 +2245,29 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
   }
   function dynFuture(d, T) {
     for (const [x, y, ph, col] of d.bl) if (Math.sin(T * 2 + ph) > 0.2) dot(ctx, x, y, 1.5, col);
+    for (const l of d.lanterns) {
+      const span = W + 60,
+        x = ((((l.x + T * l.v) % span) + span) % span) - 30,
+        y = base - l.y + Math.sin(T * 0.8 + l.ph) * l.s * 0.8,
+        s = l.s,
+        glow = ctx.createRadialGradient(x, y, 0, x, y, s * 3.2);
+      glow.addColorStop(0, `rgba(255,120,60,${(0.32 + 0.08 * Math.sin(T * 2.3 + l.ph)).toFixed(3)})`);
+      glow.addColorStop(1, "rgba(255,120,60,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(x - s * 3.2, y - s * 3.2, s * 6.4, s * 6.4);
+      ctx.fillStyle = "#ff4b3e";
+      ctx.beginPath();
+      ctx.ellipse(x, y, s * 0.85, s, 0, 0, 6.2832);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,214,120,.55)";
+      ctx.beginPath();
+      ctx.ellipse(x, y, s * 0.35, s * 0.9, 0, 0, 6.2832);
+      ctx.fill();
+      ctx.fillStyle = "#ffc247";
+      ctx.fillRect(x - s * 0.45, y - s * 1.12, s * 0.9, s * 0.22);
+      ctx.fillRect(x - s * 0.45, y + s * 0.9, s * 0.9, s * 0.22);
+      ctx.fillRect(x - 0.5, y + s * 1.1, 1, s * 0.7);
+    }
     ctx.lineWidth = 1.2;
     for (let i = 0; i < d.rings.length; i++) {
       const [x, y, w] = d.rings[i];
@@ -2321,6 +2390,68 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     for (let i = 0; i < 3; i++)
       dot(c, x + (r() - 0.5) * rr, y - r() * rr * 0.5, rr * (0.55 + r() * 0.3), pick(r, OLIVE));
   }
+  // The Theatre of Dionysus: an open fan of seating tiers cut into the slope, the round orchestra with its
+  // altar (thymele) at the foot, and a low colonnaded stage building (skene) in front. cy is the line the
+  // seating rises from; gy is the foot of the skene.
+  const THEATRE_RISE = 3.5;
+  function theatre(c, cx, gy, rx, ry, k) {
+    const tiers = 7,
+      inner = 0.3,
+      cy = gy - THEATRE_RISE * k;
+    for (let i = tiers; i >= 1; i--) {
+      const t = inner + ((1 - inner) * i) / tiers;
+      c.fillStyle = i % 2 ? "#eadcbd" : "#d9c8a2";
+      c.beginPath();
+      c.ellipse(cx, cy, rx * t, ry * t, 0, Math.PI, 0);
+      c.fill();
+    }
+    // stair aisles fanning up through the seats
+    c.strokeStyle = "rgba(150,122,82,.55)";
+    c.lineWidth = Math.max(1, 0.3 * k);
+    for (const a of [0.2, 0.36, 0.5, 0.64, 0.8]) {
+      const th = Math.PI * (1 + a);
+      c.beginPath();
+      c.moveTo(cx + Math.cos(th) * rx * inner, cy + Math.sin(th) * ry * inner);
+      c.lineTo(cx + Math.cos(th) * rx, cy + Math.sin(th) * ry);
+      c.stroke();
+    }
+    c.strokeStyle = "#bfa679";
+    c.lineWidth = Math.max(1, 0.6 * k);
+    c.beginPath();
+    c.ellipse(cx, cy, rx, ry, 0, Math.PI, 0);
+    c.stroke();
+    // the round orchestra, seen flattened, with the altar at its centre
+    const orx = rx * inner,
+      ory = Math.max(1.2 * k, ry * 0.12);
+    c.fillStyle = "#efe4cc";
+    c.beginPath();
+    c.ellipse(cx, cy, orx, ory, 0, 0, 6.2832);
+    c.fill();
+    c.strokeStyle = "#c9b28a";
+    c.lineWidth = Math.max(1, 0.35 * k);
+    c.stroke();
+    R(c, cx - 0.6 * k, cy - 1 * k, 1.2 * k, 1 * k, "#d8c7a6");
+    dot(c, cx, cy - 1.2 * k, Math.max(1, 0.35 * k), "#d6a53a");
+    // low skene: a plain colonnade between two slightly taller wings, under a terracotta roof line
+    const sw = rx * 0.95,
+      sx = cx - sw / 2,
+      top = gy - 2.6 * k,
+      wing = Math.min(3 * k, sw * 0.14);
+    R(c, sx, top, sw, gy - top + 2 * k, "#6e5a44");
+    const n = Math.max(4, Math.round((sw - 2 * wing) / (1.7 * k)));
+    for (let j = 0; j <= n; j++) {
+      const x = sx + wing + ((sw - 2 * wing) * j) / n - 0.3 * k;
+      R(c, x, top, Math.max(1, 0.6 * k), gy - top, "#f3eadb");
+    }
+    R(c, sx, top - 0.7 * k, sw, 0.7 * k, "#ebdfc4");
+    R(c, sx - 0.3 * k, top - 1.2 * k, sw + 0.6 * k, 0.5 * k, "#b5643c");
+    for (const wx of [sx, sx + sw - wing]) {
+      R(c, wx, top - 1.6 * k, wing, gy - top + 3.6 * k, "#e6d8b8");
+      R(c, wx, top - 1.6 * k, wing, Math.max(1, 0.4 * k), "#c9b28a");
+      R(c, wx + wing * 0.75, top - 1.6 * k, wing * 0.25, gy - top + 3.6 * k, "rgba(120,90,60,.16)");
+    }
+    R(c, cx - 0.7 * k, gy - 1.9 * k, 1.4 * k, 1.9 * k, "#4a3a2c"); // central doorway
+  }
   function buildClassical() {
     const k = S / ERA.classical.zoom,
       Lr = layer(base - TOP, TOP + 2),
@@ -2336,6 +2467,29 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     for (let x = 0; x <= W + 16; x += 12) c.lineTo(x, far(x));
     c.lineTo(W, base);
     c.fill();
+    // Lycabettus: a steep, pine-dark hill with a white chapel on its summit
+    {
+      const lx = W * 0.5,
+        lw = Math.min(S * 0.34, W * 0.22),
+        peak = base - S * 0.4,
+        ly = (x) => {
+          const d = (x - lx) / lw;
+          return Math.abs(d) >= 1 ? base : peak + (base - peak) * (1 - Math.pow(1 - d * d, 1.6));
+        };
+      c.fillStyle = "#8e9373";
+      c.beginPath();
+      c.moveTo(lx - lw, base);
+      for (let x = lx - lw; x <= lx + lw; x += 4) c.lineTo(x, ly(x));
+      c.lineTo(lx + lw, base);
+      c.fill();
+      for (let i = 0; i < 40; i++) {
+        const x = lx + (r() * 2 - 1) * lw * 0.75,
+          y = ly(x) + S * 0.012 + r() * S * 0.08;
+        dot(c, x, y, (0.8 + r() * 0.9) * k * 0.6, r() < 0.5 ? "#6f7a56" : "#7e8862");
+      }
+      R(c, lx - 1.6 * k, peak - 1.6 * k, 3.2 * k, 1.8 * k, "#f2ece0");
+      dot(c, lx, peak - 1.8 * k, 0.9 * k, "#f2ece0");
+    }
     const ridge = (x) => far(x) + S * 0.1 + Math.sin((x / W) * 6 + 2) * S * 0.02;
     c.fillStyle = "#a2a27a";
     c.beginPath();
@@ -2384,6 +2538,50 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     // cypresses flanking the temple and gate sites
     for (const cx of [z.c0 - 1.5 * k, z.c1 + 1.5 * k, z.g0 - 2 * k])
       claim(cx - 1.2 * k, base - 9 * k, cx + 1.2 * k, base, base, () => cypress(m, cx, base, 9 * k, CYP));
+    // bare limestone breaking through the hillside, painted straight onto the slope
+    for (let i = 0; i < 26; i++) {
+      const x = z.hx + (r() * 2 - 1) * z.sg * 2.2,
+        top = hillY(x, k),
+        hh = base - top;
+      if (hh < 12 * k || Math.abs(x - z.hx) < plat(k)) continue;
+      const y = top + 3 * k + r() * hh * 0.55,
+        w = (4 + r() * 7) * k,
+        h = (1.4 + r() * 2.2) * k;
+      if (y - h < hillY(x - w / 2, k) + 1.5 * k || y - h < hillY(x + w / 2, k) + 1.5 * k) continue;
+      m.fillStyle = "rgba(226,212,178,.55)";
+      m.beginPath();
+      m.moveTo(x - w / 2, y);
+      m.lineTo(x - w * 0.3, y - h);
+      m.lineTo(x + w * 0.15, y - h * 0.8);
+      m.lineTo(x + w / 2, y - h * 0.2);
+      m.lineTo(x + w * 0.4, y);
+      m.fill();
+      R(m, x - w / 2, y, w * 0.9, Math.max(1, 0.35 * k), "rgba(120,98,64,.35)");
+    }
+    // the theatre, cut into the west flank of the Acropolis, claimed before houses and trees
+    // Tries a few sizes and spots, largest first, and uses the first whose seating sits wholly inside the slope.
+    for (const [off, size] of [
+      [0.45, 16],
+      [0.42, 13],
+      [0.38, 10],
+      [0.34, 8],
+    ]) {
+      const rx = Math.min(size * k, z.sg * 0.45),
+        ry = rx * 0.62,
+        cx = z.hx - plat(k) - z.sg * off;
+      // lowest foot that keeps every point of the seating's rim 1.5 units under the hill line
+      let gy = 0;
+      for (let i = 0; i <= 12; i++) {
+        const a = (Math.PI * i) / 12,
+          x = cx + Math.cos(a) * rx;
+        gy = Math.max(gy, hillY(x, k) + 1.5 * k + Math.sin(a) * ry + THEATRE_RISE * k);
+      }
+      const box = [cx - rx - 1 * k, gy - THEATRE_RISE * k - ry - 1 * k, cx + rx + 1 * k, gy + 2 * k];
+      if (gy < base - 9 * k && free(box[0], box[1], box[2], box[3], 0)) {
+        claim(box[0], box[1], box[2], box[3], gy, () => theatre(m, cx, gy, rx, ry, k));
+        break;
+      }
+    }
     // a continuous row of houses along the quay, leaving the temple, gate and civic sites clear
     for (let x = -8 * k; x < W + 8 * k; ) {
       const wm = 5.5 + r() * 2.6,
@@ -2443,9 +2641,17 @@ export function initCity(cv: HTMLCanvasElement, { main, onHud = () => {} }: City
     for (let y = base + 1.4 * k; y < base + q; y += 1.4 * k)
       for (let x = (((y / (1.4 * k)) | 0) % 2) * 2 * k; x < W; x += 4 * k) R(f, x, y, 1, 1.4 * k, "rgba(90,70,50,.25)");
     R(f, 0, base + q - 1, W, 2, "rgba(20,44,52,.35)");
-    for (const bx of [W * 0.1, W * 0.68]) {
+    // Each boat slides along until its mast no longer lines up with a quayside cypress, which otherwise
+    // reads as a tree growing out of the deck.
+    const trees = [z.c0 - 1.5 * k, z.c1 + 1.5 * k, z.g0 - 2 * k];
+    for (let bx of [W * 0.1, W * 0.68]) {
       const bl = 13 * k,
         y = wy(k, 0.14);
+      for (let tries = 0; tries < 4; tries++) {
+        const near = trees.find((tx) => Math.abs(bx + bl * 0.5 - tx) < 4 * k);
+        if (near === undefined) break;
+        bx = near + (bx + bl * 0.5 >= near ? 4 * k : -4 * k) - bl * 0.5;
+      }
       P(f, "#3b2a1e", bx, y, bx + bl, y, bx + bl + 1 * k, y - 1.6 * k, bx + bl * 0.9, y + 2 * k, bx + bl * 0.12, y + 2 * k);
       R(f, bx + 0.6 * k, y, bl * 0.9, Math.max(1, 0.4 * k), "#a3271b");
       dot(f, bx + 1.4 * k, y + 0.9 * k, Math.max(1, 0.35 * k), "#f4efe4");

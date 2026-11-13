@@ -35,6 +35,11 @@
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Saira+Stencil+One&family=Saira+Condensed:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=Grenze+Gotisch:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600;700&family=Michroma&family=Chakra+Petch:wght@400;600&display=swap"
     />
+    <!-- Only the three Chinese characters on the Skyport card (天港 and the 林 seal), so the download stays tiny -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500&family=Noto+Serif+SC:wght@900&text=%E5%A4%A9%E6%B8%AF%E6%9E%97&display=swap"
+    />
 </svelte:head>
 
 {@render children()}

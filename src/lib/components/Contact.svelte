@@ -39,7 +39,7 @@
 
 <section id="contact" data-era="future">
     <div class="panel future">
-        <p class="eyebrow">Skyport · AD 2150</p>
+        <p class="eyebrow">Skyport <span class="zh" lang="zh-Hans">天港</span> · AD 2150</p>
         <h2>Contact</h2>
         <p class="intro-note">
             Open to internships, research, and collaborations, especially anything in AI alignment and safety. Email
@@ -63,7 +63,13 @@
                 </a>
             </li>
         </ul>
-        <div class="status"><span class="live">Uplink open</span><span>Based at UC Berkeley</span></div>
+        <div class="status">
+            <span class="live">Uplink open</span><span>Based at UC Berkeley</span>
+            <!-- A red name seal (林, Lin) signs off the card -->
+            <span class="seal" lang="zh-Hans" role="img" aria-label="Seal reading Lin">林</span>
+        </div>
+        <!-- The last section, so its button returns to the start instead of moving on -->
+        <a class="cue" href="#intro">Back to top · AD 2026 ↑</a>
     </div>
 </section>
 
@@ -79,6 +85,18 @@
         border: 1px solid rgba(62, 242, 255, 0.55);
         clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
         box-shadow: inset 0 0 50px rgba(62, 242, 255, 0.12);
+    }
+    /* Chinese key-fret (huiwen) motifs in the two square corners */
+    .future::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        pointer-events: none;
+        background:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M1 1H27V27H7V7H21V21H13V13' fill='none' stroke='%233ef2ff' stroke-opacity='.55' stroke-width='1.6'/%3E%3C/svg%3E")
+                top right / 24px 24px no-repeat,
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M27 27H1V1H21V21H7V7H15V15' fill='none' stroke='%233ef2ff' stroke-opacity='.55' stroke-width='1.6'/%3E%3C/svg%3E")
+                bottom left / 24px 24px no-repeat;
     }
     .future::after {
         content: "";
@@ -208,6 +226,50 @@
     @media (prefers-reduced-motion: reduce) {
         .live::before {
             animation: none;
+        }
+    }
+    .zh {
+        font-family: "Noto Sans SC", var(--f-fut-body), sans-serif;
+        letter-spacing: 0.3em;
+        margin-left: 0.2em;
+        color: #ff8a7a;
+    }
+    /* Vermilion name seal, slightly askew as if stamped by hand */
+    .seal {
+        margin-left: auto;
+        align-self: center;
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 5px;
+        background: #c8322a;
+        box-shadow:
+            inset 0 0 0 2px #c8322a,
+            inset 0 0 0 3px rgba(255, 236, 220, 0.75),
+            0 0 14px rgba(255, 75, 62, 0.45);
+        color: #fff1e8;
+        font-family: "Noto Serif SC", serif;
+        font-weight: 900;
+        font-size: 1.35rem;
+        letter-spacing: 0;
+        line-height: 1;
+        transform: rotate(-4deg);
+    }
+    .cue {
+        position: relative;
+        z-index: 1;
+        color: var(--cyan);
+        font-family: var(--f-fut-body);
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    @media (max-width: 360px) {
+        .cue {
+            padding-inline: 16px;
+            font-size: 0.86rem;
+            letter-spacing: 0.03em;
         }
     }
 </style>
